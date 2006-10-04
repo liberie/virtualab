@@ -1,0 +1,15 @@
+#! /bin/sh
+
+
+for i in $(xm list | grep xen | awk '{print $1}')
+  do
+  HRS=( $(cat /etc/passwd | grep ",$i," | cut -d "|" -f 6,7  | sed 's/|/ /g') )
+  if [ ${HRS[0]} -ne 0 ] || [ ${HRS[1]} -ne 0 ];
+      then
+      if [ $(date +%H) -gt ${HRS[1]} ] || [ $(date +%H) -lt ${HRS[0]} ];
+	  then
+	  xm shutdown $i
+	  echo "xenprogd - $i - $(date) - shutdown" >> /var/log/xenprogd.log
+      fi
+  fi
+done
