@@ -1,0 +1,52 @@
+This document describe the quick installation process for xensh.
+
+1 - Download the latest source code
+
+#svn co http://govbr.xenservers.net/svn/xen 
+
+2 - Copy the shell scripts to the correct location
+
+#cp shell/* /bin/
+
+3 - Change the permissions of the xenscripts
+
+#chmod 755 /bin/xen* 
+
+4 - Append /bin/xensh in the /etc/shells file
+
+#echo /bin/xensh >> /etc/shells
+
+5 - Setup the LVM device to use with xen virtual machines.
+
+5.1 - create the physical volume device
+
+#pvcreate YOUR_DEVICE_NAME 
+ex:
+#pvcreate /dev/sda4 
+
+5.2 - create the volume group device
+#vgcreate xen /dev/sda4
+
+6 - Create the first user to enable system
+
+#./scripts/create_first_user
+
+7 - Your /etc/sudoers must be similar to the file bellow:
+
+# /etc/sudoers
+#
+Defaults	env_reset
+root	ALL=(ALL) ALL
+# Here we setup access to the xen monitor to the group 
+# that will be used by xensh.
+%xen  ALL=(root) NOPASSWD: /usr/sbin/xm
+
+8 - Add the group xen to the system
+This group will be used by xensh to the users issue
+xen monitor (xm) commands. (start, stop vms, for example)
+Remember that all users that have /bin/xensh as their shell
+need to be in the group xen.
+
+# groupadd xen
+
+

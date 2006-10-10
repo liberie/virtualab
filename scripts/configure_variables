@@ -1,0 +1,76 @@
+#!/bin/bash
+. ../shell/vars.config
+while  [ 1 -eq 1 ] 
+do
+OPT=$(dialog --title "Configuracao de Variaveis do xensh" --stdout --ok-label "Selecionar" \
+	--cancel-label "Sair" \
+	--menu "Escolha uma opcao para configurar:" 0 0 0 \
+	1 "Nome da Instituicao" \
+	2 "Nome do Curso" \
+	3 "Email para Contato" \
+	4 "Hostname do Servidor" \
+	5 "Porta do Servidor" \
+	6 "Dispositivo LVM" \
+	7 "Diretorio de Configuracao do Xen" \
+	8 "Ver Configuracao atual" )
+case $OPT in
+     1)
+          INSTITUTION=$(dialog --title "Configuracao de Variaveis do xensh" --stdout  --inputbox "Digite o username para o novo usuario:" 0 0 )
+   
+	  ;;
+     2)
+     	  NOME_CURSO=$(dialog --title "Configuracao de Variaveis do xensh" --stdout  --inputbox "Digite o username para o novo usuario:" 0 0 ) 
+	  ;;
+     
+     3) 
+          EMAIL_CURSO=$(dialog --title "Configuracao de Variaveis do xensh" --stdout  --inputbox "Digite o username para o novo usuario:" 0 0 )
+	  ;;
+     
+     4)  
+          IP_SERVIDOR=$(dialog --title "Configuracao de Variaveis do xensh" --stdout  --inputbox "Digite o username para o novo usuario:" 0 0 )
+          ;;
+
+     5)
+	  PORTA_SERVIDOR=$(dialog --title "Configuracao de Variaveis do xensh" --stdout  --inputbox "Digite o username para o novo usuario:" 0 0 )
+	  ;;
+
+     6)   
+          XEN_VBD=$(dialog --title "Configuracao de Variaveis do xensh" --stdout  --inputbox "Digite o username para o novo usuario:" 0 0 )
+	  ;;
+
+     7)
+          XEN_CONF=$(dialog --title "Configuracao de Variaveis do xensh" --stdout  --inputbox "Digite o username para o novo usuario:" 0 0 )
+	  ;;
+
+     8)   
+          MSG="Estas variaveis estao corretas para seu ambiente? 
+          INSTITUTION = $INSTITUTION 
+          NOME_CURSO = $NOME_CURSO 
+          EMAIL_CURSO = $EMAIL_CURSO 
+          IP_SERVIDOR = $IP_SERVIDOR 
+          PORTA_SERVIDOR = $PORTA_SERVIDOR 
+          XEN_VBD = $XEN_VBD 
+          XEN_CONF = $XEN_CONF "
+	  echo $MSG
+     	  dialog --title "Configuracao de Variaveis do xensh" --stdout \
+                --yesno " $MSG " 0 0 
+          if [ $?=0 ]
+          then
+ 		sed -e 's/VAR1/$INSTITUTION/g' -e 's/VAR2/$NOME_CURSO/g' -e 's/VAR3/$EMAIL_CURSO/g' -e 's/VAR4/$IP_SERVIDOR/g' -e 's/VAR5/$PORTA_SERVIDOR/g' -e 's/VAR6/$XEN_VBD/g' -e 's/VAR7/$XEN_CONF/g' <(cat ./shell/vars.config.orig) > ./shell/vars.config 
+	        if [ $?=0 ] 
+                then 
+                 echo "sed funcionou"
+                 sleep 4
+                 exit 0 
+                else
+                 echo "o sed falhou"  
+		 sleep 4 
+		 exit 1 
+                fi 
+          fi
+	;;
+     *)  
+          exit 0
+	  ;;
+esac
+done

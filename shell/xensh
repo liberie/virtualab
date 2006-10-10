@@ -1,0 +1,244 @@
+#! /bin/bash
+# Copyright (C) 2005 Marco Sinhoreli
+# Leonardo Rodrigues de Mello 2006
+# edited on:Qua,  5 de Jul de 2006
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+# 29/06/2005
+
+
+
+trap "exit" 1 2 15
+
+PATH="/usr/local/bin:/usr/bin:/bin:/usr/bin/X11:/usr/games"
+
+home=/home/$USER
+
+chpass(){
+    case $1 in
+	1) 
+	dialog --yesno "Sua senha ainda é a padrão do sistema.\nDeseja altera-la agora?" 0 0
+	case $? in
+	    0) 
+	    passwd && (touch $home/.xenprog ;dialog --msgbox "Senha alterada com sucesso." 0 0) || dialog --msgbox "A senha não foi alterada." 0 0
+	    ;;
+        esac
+        ;;
+	2)
+	dialog --yesno "Você selecionou alterar sua senha.\nDeseja altera-la agora?" 0 0
+	case $? in
+	    0) 
+	    passwd && (touch $home/.xenprog ;dialog --msgbox "Senha alterada com sucesso." 0 0) || dialog --msgbox "A senha não foi alterada." 0 0
+	    ;;
+	esac
+	;;
+    esac
+}
+
+sshhost()
+{
+    VARS=()
+    for vm in $(sudo xm list | awk '/xen/ {print $1}')
+      do
+      VM=($(sed 's/:.*\@//g;s/|.*$//g;s/,/ /g;s/.$//g' /etc/passwd | grep "$vm\$"))
+      VARS=(${VARS[*]} ${VM[1]} ${VM[0]}) 
+    done
+    if [ ${#VARS[@]} -ne 0 ];
+	then
+	CON=$(dialog --stdout --menu "Selecione uma Virtual Machine para se conectar" 0 0 0 ${VARS[*]})
+	case $? in
+	    0)
+	    ctrl()
+	    {
+		let ctrl++
+		[ $ctrl -eq 3 ] && entrar
+	    }
+	    trap "ctrl" 1 2 15
+	    
+	    for ((num=0;num<3;num++))
+	      do
+	      read -p"Porta ssh do host $CON {Enter para default}: " port
+	      [ ! $port ] && port=22
+	      while [ "$(expr 5 / $port 2> /dev/null)" = "" ]
+		do
+		echo "Porta $port nao eh valida."
+		read -p"Porta ssh do host $CON {Enter para default}: " port
+	      done
+
+	      read -p"Username: " user
+	      [ $user ] && num=4
+	    done
+	    ssh -p $port -l $user $CON 
+	    trap "exit" 1 2 15
+	    entrar
+	    ;;
+	    1)
+	    entrar
+	    ;;
+         esac
+    else
+	dialog --msgbox "Nao existe nunhuma Virtual Machine disponivel." 0 0
+	entrar
+    fi
+}
+
+
+startvm()
+{
+    VM=$(cat /etc/passwd | grep "^$USER:" | cut -d "," -f4)
+    
+    if [ "$(sudo xm list $VM 2> /dev/null| grep $VM | cut -d ' ' -f 1)" = "$VM" ];
+	then
+	dialog --yesno "A $VM esta ativa. Voce deseja derruba-la?" 0 0
+	case $? in
+	    0)
+            echo -n "Derrubando VM $VM. "
+            sleep 2
+            sudo xm shutdown $VM
+            while [ "$(sudo xm list $VM 2> /dev/null | grep $VM | cut -d ' ' -f 1)" = "$VM" ];
+	      do
+	      echo -n "."
+	      sleep 1
+	    done
+	    entrar
+	    ;;
+	    1)
+	    entrar
+	    ;;
+       esac
+   else
+      echo "Sem sessao virtualizada. Iniciando VM $VM."
+      sleep 2
+      sudo xm create -f /etc/xen/conffiles/$VM
+      echo "Iniciando Maquina Virutal."
+      clear
+      echo -e "\e[34;1m########## PRESSIONE CTRL-] A QUALQUER MOMENTO PARA SAIR  ############\e[m"
+      sleep 5
+      sudo xm console $VM
+    fi
+    sleep 2
+    if [ "$(sudo /usr/sbin/xm list $VM 2> /dev/null | grep $VM | awk '{print $1}')" = "$VM" ];
+	then
+	clear
+	echo -ne "\e[34;1mDesativando Maquina Virtual $VM ."
+	sudo /usr/sbin/xm shutdown $VM
+	while [ "$VM" = "$(sudo /usr/sbin/xm list $VM 2> /dev/null | awk '/xen/ {print $1}')" ];
+	  do
+	  echo -n .
+	done
+	echo -e ".\e[m"
+	echo "Maquina Virtual $VM desativada." 
+	entrar
+    else
+	dialog --msgbox "Maquina Virutal $VM ja esta ativa." 0 0
+	entrar
+    fi
+}
+
+
+
+
+entrar(){
+    VAR=$(dialog --stdout --nocancel --menu "Selecione uma opção:" 0 0 0 1 "Iniciar Virtual Machine." 2 "Alterar senha." 3 "Acessar Virtual Machine via ssh." 4 "Sair.")
+    case $VAR in
+	1)
+        startvm
+	;;
+	2)
+        chpass 2
+	entrar
+	;;
+	3)
+	sshhost
+	;;
+	4)
+	exit
+	;;
+    esac
+}
+
+entrar
+
+TOT_VM=60
+
+VM_ON=$(sudo xm list  2> /dev/null | grep xen | wc -l)
+
+if [ $VM_ON -ge $TOT_VM ]
+    then
+    echo "Limite de conexoes simultaneas esgotado."
+    echo "Tente mais tarde ou consulte o administrador."
+    entrar
+fi
+
+STAT=$(cat /etc/passwd | grep "^$USER:" | cut -d "|" -f8 | cut -d : -f 1)
+
+DATA=$(date +%s)
+
+Y_INI=$(cat /etc/passwd | grep "^$USER:" | cut -d "|" -f3 | cut -d "-" -f 3)
+M_INI=$(cat /etc/passwd | grep "^$USER:" | cut -d "|" -f3 | cut -d "-" -f 2)
+D_INI=$(cat /etc/passwd | grep "^$USER:" | cut -d "|" -f3 | cut -d "-" -f 1)
+
+Y_TER=$(cat /etc/passwd | grep "^$USER:" | cut -d "|" -f4 | cut -d "-" -f 3)
+M_TER=$(cat /etc/passwd | grep "^$USER:" | cut -d "|" -f4 | cut -d "-" -f 2)
+D_TER=$(cat /etc/passwd | grep "^$USER:" | cut -d "|" -f4 | cut -d "-" -f 1)
+
+DT_INI=$(date --date="$Y_INI"-"$M_INI"-"$D_INI" +%s)
+DT_TER=$(date --date="$Y_TER"-"$M_TER"-"$D_TER" +%s)
+DT_TER=$(( $DT_TER + 86400 ))
+
+H_INI=$(cat /etc/passwd | grep "^$USER:" | cut -d "|" -f6)
+H_TER=$(cat /etc/passwd | grep "^$USER:" | cut -d "|" -f7)
+
+SEMANA=$(cat /etc/passwd | grep "^$USER:" | cut -d "|" -f5)
+
+if [ $STAT -eq 1 ];
+    then
+    echo "Status STAT"
+    exit
+fi
+
+if [ $DATA -lt $DT_INI ] 
+    then
+    echo "Status DT_INI"
+    exit
+fi
+
+if [ $DATA -gt $DT_TER ] 
+    then
+    echo "Status DT_TER"
+    exit
+fi
+
+
+if [ ! "$(echo $SEMANA | grep $(date +%u))" ] 
+    then
+    echo "Status SEMANA"
+    exit
+fi
+
+if [ $H_INI -ne 0 ] || [ $H_TER -ne 0 ];
+    then
+    if [ $H_INI -gt $(date +%H) ] 
+	then
+	echo "Status H_INI"
+	exit
+    fi
+    if [ $H_TER -le $(date +%H) ] 
+	then
+	echo "Status DT_TER"
+	exit
+    fi
+fi
+
