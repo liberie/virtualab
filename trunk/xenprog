@@ -1,21 +1,53 @@
 #! /bin/sh
 
+# Copyright (C) 2005 Marco Sinhoreli
+# Leonardo Rodrigues de Mello 2006
+# edited on: Qua,  5 de Jul de 2006
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+# 29/06/2005
+
 # Script criado para automatizazao de processo de rotinas de gerenciamento 
 # de usuários de Maquinas Virtuais XEN do projeto HackerTeen da 4Linux/IBM.
 # Por Marco Sinhoreli <msinhore@gmail.com>
 # Em 29/06/2005
+# Importacao das variaveis de sistema
+if [ -f ./vars.config ]
+then 
+	. ./vars.config
+else
+	if [ -f /etc/xensh/vars.config ]
+	then 
+	   . /etc/xensh/vars.config
+	else
+	   echo "Arquivo de configuracao nao existe"
+	   echo "Abortando Programa"
+	   exit 1
+	fi
+fi
 
+echo $SESSION
+echo $INSTITUTION
+echo $NOME_CURSO
+echo $EMAIL_CURSO
+echo $IP_SERVIDOR
+echo $PORTA_SERVIDOR
+echo $XEN_CONF
+echo $XEN_VBD
 
-# Variaveis de ambiente
-
-SESSION=$RANDOM
-ADM="logistica@4linux.com.br"
-
-XEN_CONF=/etc/xen/conffiles
-XEN_VBD=/dev/xen
-
-alias DIALOG="dialog --title \"Gerenciamento XEN\" --stdout"
-
+sleep 2
 #  Menu principal da Ferramenta
 
 menu(){
@@ -108,23 +140,41 @@ Visualiza todos os dados relativos ao sistema de Maquinas Virtuais:
 }
 
 # Área de Gerenciamento de usuários (lista)
-
-gerenciamento() {
-    
+cria_user_list(){
     list=
-    
     for i in $(cat /etc/passwd | grep xensh | sed 's/,/:/g' | cut -d":" -f1,8 | sort)
       do
       value=($(echo $i | sed 's/:/ /'))
       list="$list ${value[1]} ${value[0]}"
     done
-    
-# Exibindo menu com a lista
-    VER_VM=$(DIALOG \
+
+}
+nao_existe_usuarios(){
+	DIALOG \
 	--cancel-label "Menu" \
-	--menu "Selecione um usuário para visualização:" 0 0 0 \
+	--yesno "Não existe usuários cadastrados.\n
+	Deseja cadastrar um novo usuário agora?" 0 0
+#	echo $?
+#	exit
+	case $? in 
+	    0) create_xen
+	    ;;
+	    1) menu
+	    ;;
+	esac
+}
+gerenciamento() {
+    cria_user_list
+# Exibindo menu com a lista
+    if [ ! $list ];
+    	then
+    	nao_existe_usuarios
+    else
+        VER_VM=$(DIALOG \
+	--cancel-label "Menu" \
+	--menu "Selecione um usuario para visualizacao:" 0 0 0 \
 	$list)
-    
+
     case $? in
         0) visualiza
 	    ;;
@@ -133,6 +183,7 @@ gerenciamento() {
         255) exit 0
 	    ;;
     esac
+    fi
 }
 
 # Área de visualização/alteração de usuário expecifico
@@ -305,14 +356,13 @@ visualiza(){
 }
 
 # Funcao de criacao de usuario e VM:
-
 create_xen(){
-    FREE_PE=$(vgdisplay | awk '/Free  PE/ {print $7 " " $8}')
+FREE_PE=$(VGDISPLAY | awk '/Free  PE/ {print $7 " " $8}')
     DISP_VM=$[ ( $(echo $FREE_PE | cut -d " " -f 1 | sed 's/\.//;s/,//')0 / 512 ) ]
     if [ $DISP_VM -eq 0 ];
 	then
 	DIALOG \
-	    --msgbox "Nao existe espaco disponivel para criacao de \nnovas Maquinas Virtuais." 0 0
+	    --msgbox "Não existe espaço disponível para criação de \n novas Máquinas Virtuais." 0 0
 	menu
     else
 	USR=1
@@ -331,19 +381,22 @@ create_xen(){
 	    echo "Criando senha."
 	    echo "XXX"
 	    PASS=$(dd if=/dev/random ibs=6 count=1 2>/dev/null | mimencode)
-	    
+	    if [ $? -eq 0 ]
+            then
 	    echo "XXX"
 	    echo 2
 	    echo "Criptografando senha."
 	    echo "XXX"
 	    CRYPT_PASS=$(mkpasswd $PASS)
-	    
+	    if [ $? -eq 0 ]
+            then 
 	    echo "XXX"
 	    echo 3
 	    echo "Criando conta do usuário."
 	    echo "XXX"
 	    vm=$(for ((i=1;i<1024;i++))
 		do 
+# FIX ME 
 		if [ ! $(ls /dev/xen/disk$i 2> /dev/null) ]
 		    then
 		    echo $i | sed 's/ //g'
@@ -352,47 +405,54 @@ create_xen(){
 	    done)
 	
 	    useradd -c "$NOME,$TURMA,@,xen$vm,||$DT_INI|$DT_TER|$DT_ACE|$HR_INI|$HR_TER|0" -m -g xen -p $CRYPT_PASS -s /bin/xensh $USR
-	
+ 	    if [ $? -eq 0 ]
+            then	
 	    echo "XXX"
 	    echo 4
 	    echo "Escrevendo log"
 	    echo "XXX"
 	    echo -e "$(date +%d/%m/%y) -- $TURMA\t$NOME\t$USR\t$MAIL\txen$vm\t$PASS" >> /var/log/xenprog.log
-	    
+	    if [ $? -eq 0 ]
+            then 
 	    echo "XXX"
 	    echo 5
 	    echo "Criando VBD LVM."
 	    echo "XXX"
-	    lvcreate -L512M -n disk$vm xen 2> /dev/null > /dev/null
-	
+	    LVCREATE -L512M -n disk$vm xen 2> /dev/null > /dev/null
+	    if [ $? -eq 0 ]
+            then
 	    echo "XXX"
 	    echo 6
 	    echo "Criando sistema de arquivos em $XEN_VBD/disk$vm."
 	    echo "XXX"
 	    mkfs.ext3 $XEN_VBD/disk$vm 2> /dev/null > /dev/null
-	
+	    if [ $? -eq 0 ]
+            then
 	    echo "XXX"
 	    echo 7
 	    echo "Montando VBD LVM."
 	    echo "XXX"
 	    mount $XEN_VBD/disk$vm /mnt/disk  2> /dev/null > /dev/null
-	
+	    if [ $? -eq 0 ]
+	    then	
 	    echo "XXX"
 	    echo 8
 	    echo "Montando disco matriz."
 	    echo "XXX"
 	    mount $XEN_VBD/disk_orig /mnt/image 2> /dev/null > /dev/null
-	
+	    if [ $? -eq 0 ]
+            then	
 	    echo "XXX"
 	    echo 9
 	    echo "Criando sistema no novo VBD."
 	    echo "XXX"
-
 	    x=$(df -m /mnt/image | awk '/image/{print $2}')
 	    y=$(echo "$(echo $x) / 86" | bc -l)
 	    df=$(df -m /mnt/disk | awk '/disk/{print $2}')
 
 	    cp -a /mnt/image/* /mnt/disk 2> /dev/null > /dev/null &
+	    if [ $? -eq 0 ] 
+	    then	
 
 	    while [ ${df} -lt 356 ]
 		do
@@ -420,62 +480,89 @@ create_xen(){
 	    echo -e "
 	    Olá $nome
 
-	Você esta cadastrado no sistema HACKERMICRO do HackerTeen.
+	Voce esta cadastrado no sistema de maquinas virtuais da $INSTITUTION.
 
-	Para acessar seu HACKERMICRO, você poderá usar o SSH caso esteja no Linux, ou o PUTTY caso ainda use Windows.
+	Para acessar sua maquina virtual, voce podera usar o SSH caso esteja no Linux, ou o PUTTY caso ainda use Windows.
 
-	Para que você tenha acesso seguem as informações Importantes: (Não perca!!!)
+	Para que voce tenha acesso seguem as informacoes Importantes: (Nao perca!!!)
 
-	IP do HackerMicro:  201.6.255.3
-	Porta de Acesso:    2222
+	IP do Servidor :  $IP_SERVIDOR
+	Porta de Acesso:    $PORTA_SERVIDOR
 	Login de Acesso:    $USR
 	Senha de Acesso:    $PASS 
-	
-	Login Dentro do HackerMicro: root
-	Sua senha de Root:  hackerteen
+	Sua senha de Root:  $NOME_CURSO
 
-	-> Acessando o HACKERMICRO pelo Windows:
+	-> Acessando a Maquina Virtual pelo Windows:
 
 	Baixe o programinha putty: http://superdownloads.ubbi.com.br/download/i19845.html
 
-	E preencha as informações de IP e Porta para se conectar!
+	E preencha as informacoes de IP e Porta para se conectar!
 
-	Caso tenha Dúvidas poderá consultar seu Guia Didático!
+	-> Acessando a Maquina  Virtual pelo Linux:
 
-	-> Acessando a Máquina  Virtual pelo Linux:
+	Execute o comando:  ssh $USR@$IP_SERVIDOR  -p $PORTA_SERVIDOR -C
 
-	Execute o comando:  ssh $USR@201.6.255.3  -p 2222 -C
-
-	ATENÇÃO!!! Você deverá trocar sua senha de root logo no primeiro acesso, para sua própria proteção! Para isso execute o comando:
+	ATENCAO!!! Voce devera trocar sua senha de root logo no primeiro acesso, para sua propria protecao! Para isso execute o comando:
 
 	passwd
 
-	E lembre-se, é obrigatório colocar uma SENHA BEM DIFÍCIL! ;-)
+	E lembre-se, Eh obrigatario colocar uma SENHA BEM DIFICIL! ;-)
 
-	Dias em que sua máquina estará disponível: $DT_ACE
-	(Sendo 1-Segunda, 2-Terça, 3-Quarta, 4-Quinta, 5-Sexta, 6-Sábado e 7-Domingo)
+	Dias em que sua maquina estara disponivel: $DT_ACE
+	(Sendo 1-Segunda, 2-Terca, 3-Quarta, 4-Quinta, 5-Sexta, 6-Sabado e 7-Domingo)
 
-	Horário que sua Máquina Virtual estará disponível: Das $HR_INI:00 às $HR_TER:00
+	Horario que sua Maquina Virtual estara disponivel: Das $HR_INI:00 as $HR_TER:00
 
-	-> Encerrando uma conexão na Máquina Virtual:
+	-> Encerrando uma conexao na Maquina Virtual:
 
-	Para SAIR da Máquina Virtual da maneira correta, basta teclar  Ctrl+]
+	Para SAIR da Maquina Virtual da maneira correta, basta teclar  Ctrl+]
 
-	Isso mesmo é CTRL + ] (Fecha Colchete!) :-)
+	Isso mesmo a CTRL + ] (Fecha Colchete!) :-)
 
 	Bom Acesso!
 
-	Equipe HackerTeen" > /tmp/mail.$USR
+	Equipe $INSTITUTION" > /tmp/mail.$USR
 
-	    sudo -u contato mail -s "Senha de acesso para o HACKERMICRO - HackerTeen" -b servidorvirtual@4linux.com.br  $MAIL < /tmp/mail.$USR	
-	    sudo -u contato mail -s "Senha de acesso para o HACKERMICRO - HackerTeen" -b servidorvirtual@4linux.com.br  $ADM < /tmp/mail.$USR	
-
+	    sudo -u contato mail -s "Senha de acesso para Maquina Virtual XEN $NOME_CURSO" -b $EMAIL_CURSO  $MAIL < /tmp/mail.$USR
+	    sudo -u contato mail -s "Senha de acesso para Maquina Virtual Xen $NOME_CURSO" -b gnuleo@gmail.com  $ADM < /tmp/mail.$USR	
+	if [ $? -eq 0 ]
+	then
 	    rm /tmp/mail.$USR
 
 	    echo "XXX"
 	    echo 100
 	    echo "Finalizado."
 	    echo "XXX"
+	else
+	DIALOG --msgbox "ERRO ao enviar o email de notificacao de criacao da maquina virtual" 0 0
+	fi
+	else
+	DIALOG --msgbox "ERRO ao copiar os arquivos da maquina virtual" 0 0
+	fi
+	else
+	DIALOG --msgbox "ERRO ao montar o volume logico da maquina exemplo" 0 0
+	fi
+	else
+	DIALOG --msgbox "ERRO ao montar o volume logico da maquina virtual" 0 0
+ 	fi
+	else
+	DIALOG --msgbox "ERRO ao formatar o volume logico da maquina virtual" 0 0
+	fi
+        else 
+        DIALOG --msgbox "ERRO ao criar o volume logico da maquina virtual" 0 0
+	fi
+        else
+        DIALOG --msgbox "ERRO ao logar a criacao da maquina virtual." 0 0
+	fi
+        else
+        DIALOG --msgbox "ERRO ao adicionar usuario no sistema" 0 0
+	fi
+	else
+        DIALOG --msgbox "ERRO ao criptografar a senha do usuario" 0 0
+	fi
+	else 
+        DIALOG --msgbox "ERRO ao criar a senha do usuario" 0 0
+	fi
 	}
     
 	while [ "$USR" = "1" ] || [ $(id $USR 2> /dev/null > /dev/null && echo 1 || echo 0) -eq 1 ] || [ $(echo -n $USR | wc -c) -lt 3 ]
@@ -575,14 +662,14 @@ create_xen(){
       Nome completo:    $NOME
       Turma:            $TURMA
       E-mail:           $MAIL
-      Data de iníci:    $DT_INI
+      Data de início:    $DT_INI
       Data de termino:  $DT_TER
       Dias de acesso:   $DT_ACE
       Hora inicial:     $HR_INI
       Hora final:       $HR_TER" 0 0
 	case $? in
 	    0) 
-	    create_vm | DIALOG --gauge "Agurde..." 20 70 0
+	    create_vm | DIALOG --gauge "Aguarde..." 20 70 0
 	    DIALOG \
 		--ok-label OK \
 		--msgbox "Usuário $USR e Maquina Virtual adicionados com sucesso." 0 0
@@ -599,16 +686,17 @@ create_xen(){
 }
 
 list_remove(){
-    list=""
-    
-    for i in $(cat /etc/passwd | grep xensh | sed 's/,/:/g' | cut -d: -f1,8 | sort)
-      do
-      value=($(echo $i | sed 's/:/ /'))
-      list="$list ${value[1]} ${value[0]}"
-    done
+    cria_user_list
     
 # Exibindo menu com a lista
-    VER_VM=$(DIALOG \
+    if [ ! $list ];
+	then
+	DIALOG \
+	--cancel-label "Menu" \
+	--msgbox "Nao existe nenhuma Maquina Virtual cadastrada." 0 0
+	menu
+    else
+	VER_VM=$(DIALOG \
 	--cancel-label "Menu" \
 	--menu "Selecione um usuário/VM para remoção:" 0 0 0 \
 	$list)
@@ -621,6 +709,7 @@ list_remove(){
         255) exit 0
 	    ;;
     esac
+    fi
 }
 
 remove(){
@@ -654,10 +743,21 @@ Destruir a Maquina virtual incondicionalmente?" 0 0
 	    lvremove -f $XEN_VBD/disk$(echo $VER_VM | cut -d n -f 2 2> /dev/null > /dev/null)
 	    deluser $USR 2> /dev/null > /dev/null
 	    rm -rf /home/$USR 2> /dev/null > /dev/null
-
+	    if [ $? -eq 0 ]
+	    then
+	    deluser $USR
+	    if [ $? -eq 0 ]
+	    then
 	    DIALOG \
 		--ok-label OK \
-		--msgbox "Usuario e Virtual Machine removidos com sucesso." 0 0
+		--msgbox "Usuário e Virtual Machine removidos com sucesso." 0 0
+	    else
+	    DIALOG --msgbox "Erro no comando deluser para remover o usuario" 0 0
+	    fi
+	    else
+	    DIALOG --msgbox "Não foi possivel remover o volume lógico do usuário" 0 0 
+	    fi
+
 	    menu
 	    ;;
         1) menu
@@ -668,20 +768,29 @@ Destruir a Maquina virtual incondicionalmente?" 0 0
 }
 
 list_concerta(){
-    list=
+    cria_user_list
     
-    for i in $(cat /etc/passwd | grep xensh | sed 's/,/:/g' | cut -d: -f1,8)
-      do
-      value=($(echo $i | sed 's/:/ /'))
-      list="$list ${value[1]} ${value[0]}"
-    done
-    
+    if [ ! $list ];
+    	then
+	DIALOG \
+	--cancel-label "Menu" \
+	--yesno "Nao existem Maquinas Virtuais cadastradas.\n
+	Deseja cadastrar uma nova maquina virtual agora?" 0 0
+#	echo $?
+#	exit
+	case $? in 
+	    0) create_xen
+	    ;;
+	    1) menu
+	    ;;
+	esac
+    else
 # Exibindo menu com a lista
     VER_VM=$(DIALOG \
 	--cancel-label "Menu" \
 	--menu "Selecione um usuário/VM para conserto:" 0 0 0 \
 	$list)
-    
+
     case $? in
         0) concerta
 	    ;;
@@ -690,26 +799,64 @@ list_concerta(){
         255) exit 0
 	    ;;
     esac
+    fi
 }
 
 concerta(){
     vm=$(echo $VER_VM | cut -d n -f2)
     echo "Reformatando VBD."
     mkfs.ext3 $XEN_VBD/disk$vm 2> /dev/null > /dev/null
+    if [ $? -eq 0 ]
+    then
     echo "Montando VBD."
     mount $XEN_VBD/disk$vm /mnt/disk  2> /dev/null > /dev/null
+    if [ $? -eq 0 ]
+    then
     echo "Montando disco matriz."
     mount $XEN_VBD/disk_orig /mnt/image 2> /dev/null > /dev/null
+    if [ $? -eq 0 ]
+    then 
     echo "Criando sistema no VBD."
     cp -a /mnt/image/* /mnt/disk 2> /dev/null > /dev/null
+    if [ $? -eq 0 ]
+    then 
     echo "Desmontando volumes." 
     umount /mnt/image 2> /dev/null > /dev/null
+    if [ $? -eq 0 ]
+    then
     umount /mnt/disk 2> /dev/null > /dev/null
-    
+    if [ $? -eq 0 ] 
+    then
+    sleep 10 
     DIALOG \
 	--ok-label Menu \
 	--beep \
 	--msgbox "Operacao realizada com sucesso." 0 0
+	
+   else
+#debug   sleep 5
+   DIALOG --msgbox "ERRO para desmontar o disco da nova maquina virtual" 0 0
+   fi
+   else 
+#debug   sleep 5
+   DIALOG --msgbox "ERRO para desmontar o disco matriz" 0 0
+   fi
+   else 
+#debug   sleep 5
+   DIALOG --msgbox "ERRO durante a copia de arquivos " 0 0 
+   fi
+   else
+#debug   sleep 5
+   DIALOG --msgbox "ERRO durante a montagem do disco matriz" 0 0
+   fi
+   else 
+#debug   sleep 5 
+   DIALOG --msgbox "ERRO durante a montagem do VBD" 0 0
+   fi
+   else
+#debug   sleep 5
+   DIALOG --msgbox "ERRO durante a formatacao do VBD" 0 0
+   fi
     menu   
 }
 
@@ -730,18 +877,18 @@ status_menu(){
 
     case $OPT in
 	1) # "Recursos do sistema de VBDs (Virtual Block Devices)"
-	    MAX_LV=$(vgdisplay | awk '/MAX LV/ {print $3}')
-	    CUR_LV=$(vgdisplay | awk '/Cur LV/ {print $3}')
-	    TAM_VG=$(vgdisplay | awk '/VG Size/ {print $3 " " $4}')
-	    ALLOC_PE=$(vgdisplay | awk '/Alloc PE/ {print $7 " " $8}')
-	    FREE_PE=$(vgdisplay | awk '/Free  PE/ {print $7 " " $8}')
+	    MAX_LV=$(VGDISPLAY | awk '/MAX LV/ {print $3}')
+	    CUR_LV=$(VGDISPLAY | awk '/Cur LV/ {print $3}')
+	    TAM_VG=$(VGDISPLAY | awk '/VG Size/ {print $3 " " $4}')
+	    ALLOC_PE=$(VGDISPLAY | awk '/Alloc PE/ {print $7 " " $8}')
+	    FREE_PE=$(VGDISPLAY | awk '/Free  PE/ {print $7 " " $8}')
 
 	    CAPVM_T=$[ ( $(echo $TAM_VG | cut -d " " -f 1 | sed 's/\.//;s/,//')0 / 512 - 1 ) ]
 	    CAPVM_A=$[ ( $(echo $ALLOC_PE | cut -d " " -f 1 | sed 's/\.//;s/,//')0 / 512 - 1 ) ]
 	    DISP_VM=$[ ( $(echo $FREE_PE | cut -d " " -f 1 | sed 's/\.//;s/,//')0 / 512 ) ]
 
 	    MSG=$( echo "
-Informações sobre Recursos de Virutal Block Devices em LVM
+Informações sobre Recursos de Virtual Block Devices em LVM
 ----------------------------------------------------------
     Capacidade maxima de Volumes Logicos.................: $MAX_LV
     Volumes Logicos alocados no sistema..................: $CUR_LV
@@ -749,10 +896,10 @@ Informações sobre Recursos de Virutal Block Devices em LVM
     Espaco alocado no Grupo de Volume....................: $ALLOC_PE
     Espaco disponivel no Grupo de Volume.................: $FREE_PE
 
-Informações sobre Recursos de Maquinas Virutais
+Informações sobre Recursos de Maquinas Virtuais
 ----------------------------------------------------------
     Capacidade maxima de Maquinas Virtuais...............: $CAPVM_T
-    Capacidade em uso por Maquinas Virutais..............: $CAPVM_A
+    Capacidade em uso por Maquinas Virtuais..............: $CAPVM_A
     Capacidade disponivel para novas Maquinas Virtuais...: $DISP_VM
 
 " | sed 's/Size//')
@@ -816,12 +963,11 @@ Informações sobre Recursos de Maquinas Virutais
 
 	3) # "Sistema de log de acesso por usuário"
 	sistlog(){
-	    list=
-	    for i in $(cat /etc/passwd | grep xensh | sed 's/,/:/g' | cut -d: -f1,8 | sort)
-	      do
-	      value=($(echo $i | sed 's/:/ /'))
-	      list="$list ${value[0]} ${value[1]}"
-	    done
+	    cria_user_list
+	    if [ ! $list ] 
+	       then
+	       nao_existe_usuarios
+	    else
 	    VER_LOG=$(DIALOG \
 		--cancel-label "Menu" \
 		--menu "Selecione um usuário para visualização do log:" 0 0 0 \
@@ -840,6 +986,7 @@ Informações sobre Recursos de Maquinas Virutais
 		    menu
 		    ;;
 	    esac
+	    fi
          }
 	 sistlog
 	 ;;
