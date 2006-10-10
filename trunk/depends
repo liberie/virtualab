@@ -1,0 +1,51 @@
+---Xensh depends on:
+dialog
+sed
+awk
+grep
+bash
+sudo
+cut
+sort
+cat
+xm
+chfn
+dd
+mkpasswd
+useradd
+date
+mkfs.ext3
+mount
+mail
+id
+cp
+mimencode - pacote debian metamail
+last
+
+---How to create one machine:
+
+
+LVCREATE -L512M -n disk$vm xen 2> /dev/null > /dev/null
+mkfs.ext3 $XEN_VBD/disk$vm 2> /dev/null > /dev/null
+mount $XEN_VBD/disk$vm /mnt/disk  2> /dev/null > /dev/null
+mount $XEN_VBD/disk_orig /mnt/image 2> /dev/null > /dev/null
+cp -a /mnt/image/* /mnt/disk 2> /dev/null > /dev/null
+umount /mnt/image 2> /dev/null > /dev/null
+umount /mnt/disk 2> /dev/null > /dev/null
+manda email avisando 
+nao tah definido em lugar nenhum onde é criado o arquivo de configuracao.
+
+
+
+---Significado das variaveis do /etc/passwd
+$NOME,$TURMA,@,xen$vm,||$DT_INI|$DT_TER|$DT_ACE|$HR_INI|$HR_TER|0
+USR = Username
+VER_VM = Máquina virtual, vem da parte de selecao de usuario, do cria_user_list
+NOME = Nome Completo
+MAIL = Email do usuario
+TURMA = Turma do usuario
+DT_INI = Data de inicio
+DT_TER = Data de termino
+DT_ACE = Dias da semana
+HR_INI = Hora inicial
+HR_TER = Hora terminal
