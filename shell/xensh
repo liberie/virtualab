@@ -1,7 +1,7 @@
 #! /bin/bash
 # Copyright (C) 2005 Marco Sinhoreli
 # Leonardo Rodrigues de Mello 2006
-# edited on:Qua,  5 de Jul de 2006
+# edited on: Ter Out 10 14:57:19 BRT 2006
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,8 +19,9 @@
 # 29/06/2005
 
 
-
 trap "exit" 1 2 15
+
+export LANGUAGE=pt_BR:pt:pt_PT
 
 PATH="/usr/local/bin:/usr/bin:/bin:/usr/bin/X11:/usr/games"
 
@@ -104,24 +105,54 @@ startvm()
 	dialog --yesno "A $VM esta ativa. Voce deseja derruba-la?" 0 0
 	case $? in
 	    0)
-            echo -n "Derrubando VM $VM. "
+	    touch /tmp/$VM 
+	    clear
+	    tput setaf 4
+            echo -n "Derrubando VM $VM"
             sleep 2
             sudo xm shutdown $VM
+            tput setaf 2
             while [ "$(sudo xm list $VM 2> /dev/null | grep $VM | cut -d ' ' -f 1)" = "$VM" ];
 	      do
-	      echo -n "."
-	      sleep 1
+                sleep 0.05
+                tput cup 0 20
+                echo -n '|'
+                sleep 0.05
+                tput cup 0 20
+                echo -n '/'
+                sleep 0.05
+                tput cup 0 20
+                echo -n '-'
+                sleep 0.05
+                tput cup 0 20
+                echo -n '\'
+                sleep 0.05
+                tput cup 0 20
+                echo -n '|'
+                sleep 0.05
+                tput cup 0 20
+                echo -n '/'
+                sleep 0.05
+                tput cup 0 20
+                echo -n '-'
+                sleep 0.05
+                tput cup 0 20
+                echo -n '\'
+                sleep 0.05
 	    done
+	    tput op
 	    entrar
 	    ;;
 	    1)
-	    entrar
+    entrar
 	    ;;
        esac
    else
+      clear
       echo "Sem sessao virtualizada. Iniciando VM $VM."
       sleep 2
-      sudo xm create -f /etc/xen/conffiles/$VM
+      clear
+      sudo xm create -c -f /etc/xen/conffiles/$VM
       echo "Iniciando Maquina Virutal."
       clear
       echo -e "\e[34;1m########## PRESSIONE CTRL-] A QUALQUER MOMENTO PARA SAIR  ############\e[m"
@@ -129,26 +160,62 @@ startvm()
       sudo xm console $VM
     fi
     sleep 2
-    if [ "$(sudo /usr/sbin/xm list $VM 2> /dev/null | grep $VM | awk '{print $1}')" = "$VM" ];
-	then
-	clear
-	echo -ne "\e[34;1mDesativando Maquina Virtual $VM ."
-	sudo /usr/sbin/xm shutdown $VM
-	while [ "$VM" = "$(sudo /usr/sbin/xm list $VM 2> /dev/null | awk '/xen/ {print $1}')" ];
-	  do
-	  echo -n .
-	done
-	echo -e ".\e[m"
-	echo "Maquina Virtual $VM desativada." 
-	entrar
+    if [ ! -f /tmp/$VM ];
+        then
+        if [ "$(sudo /usr/sbin/xm list $VM 2> /dev/null | grep $VM | awk '{print $1}')" = "$VM" ];
+	    then
+	    clear
+	    tput setaf 4
+	    echo -ne "Desativando Maquina Virtual $VM "
+	    sudo /usr/sbin/xm shutdown $VM
+	    tput setaf 2
+	    while [ "$VM" = "$(sudo /usr/sbin/xm list $VM 2> /dev/null | awk '/xen/ {print $1}')" ];
+		do
+                sleep 0.05
+                tput cup 0 35
+                echo -n '|'
+                sleep 0.05
+                tput cup 0 35
+                echo -n '/'
+                sleep 0.05
+                tput cup 0 35
+                echo -n '-'
+                sleep 0.05
+                tput cup 0 35
+                echo -n '\'
+                sleep 0.05
+                tput cup 0 35
+                echo -n '|'
+                sleep 0.05
+                tput cup 0 35
+                echo -n '/'
+                sleep 0.05
+                tput cup 0 35
+                echo -n '-'
+                sleep 0.05
+                tput cup 0 35
+                echo -n '\'
+                sleep 0.05
+	    done
+	    echo
+	    tput setaf 2
+	    echo "Maquina Virtual $VM desativada." 
+	    tput setaf 4
+	    read -p "Precione a tecla Enter para continuar." press
+	    tput op
+	    entrar
+        fi
     else
-	dialog --msgbox "Maquina Virutal $VM ja esta ativa." 0 0
+	rm /tmp/$VM
+	clear
+	tput setaf 2
+	echo "Maquina Virutal $VM foi desativada."
+	tput setaf 4
+	read -p "Precione a tecla Enter para continuar." press
+	tput op
 	entrar
     fi
 }
-
-
-
 
 entrar(){
     VAR=$(dialog --stdout --nocancel --menu "Selecione uma opção:" 0 0 0 1 "Iniciar Virtual Machine." 2 "Alterar senha." 3 "Acessar Virtual Machine via ssh." 4 "Sair.")
