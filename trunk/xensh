@@ -1,4 +1,23 @@
 #! /bin/bash
+# Copyright (C) 2005 Marco Sinhoreli
+# Leonardo Rodrigues de Mello 2006
+# edited on:Qua,  5 de Jul de 2006
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+# 29/06/2005
+
 
 trap "exit" 1 2 15
 
@@ -125,12 +144,20 @@ startvm()
 	    entrar
 	    ;;
 	    1)
-	    entrar
+    entrar
 	    ;;
        esac
    else
       clear
+      echo "Sem sessao virtualizada. Iniciando VM $VM."
+      sleep 2
+      clear
       sudo xm create -c -f /etc/xen/conffiles/$VM
+      echo "Iniciando Maquina Virutal."
+      clear
+      echo -e "\e[34;1m########## PRESSIONE CTRL-] A QUALQUER MOMENTO PARA SAIR  ############\e[m"
+      sleep 5
+      sudo xm console $VM
     fi
     sleep 2
     if [ ! -f /tmp/$VM ];
