@@ -32,8 +32,8 @@ else
 	then 
 	   . /etc/xensh/vars.config
 	else
-	   echo "Arquivo de configuracao nao existe"
-	   echo "Abortando Programa"
+	   echo $"Arquivo de configuracao nao existe"
+	   echo $"Abortando Programa"
 	   exit 1
 	fi
 fi
@@ -54,14 +54,14 @@ menu(){
     
     OPT=$(DIALOG \
 	--help-button \
-	--ok-label "Selecionar" \
-	--cancel-label "Sair" \
-	--menu "Escolha uma opção:" 0 0 0 \
-	1 "Gerenciamento de usuários e Maquinas Virtuais" \
-	2 "Adicionar Usuário/Maquina Virtual" \
-	3 "Reinstalar Maquina Virtual com problemas" \
-	4 "Remover Maquina Virtual e usuário" \
-	5 "Ver status do sistema" )
+	--ok-label $"Selecionar" \
+	--cancel-label $"Sair" \
+	--menu $"Escolha uma opção:" 0 0 0 \
+	1 $"Gerenciamento de usuários e Maquinas Virtuais" \
+	2 $"Adicionar Usuário/Maquina Virtual" \
+	3 $"Reinstalar Maquina Virtual com problemas" \
+	4 $"Remover Maquina Virtual e usuário" \
+	5 $"Ver status do sistema" )
     
     case $? in
 	1|255) exit 0 ;;
@@ -69,9 +69,9 @@ menu(){
 	    case $OPT in
 		"HELP 1")
 		    DIALOG \
-			--ok-label "Menu" \
-			--backtitle "Gerenciamento de usuários e Maquinas Virtuais" \
-			--msgbox "
+			--ok-label $"Menu" \
+			--backtitle $"Gerenciamento de usuários e Maquinas Virtuais" \
+			--msgbox $"
 Visualize e altere as configuracoes dos usuarios como:
   - Nome
   - e-mail
@@ -82,34 +82,34 @@ Visualize e altere as configuracoes dos usuarios como:
 " 20 70;;
 		"HELP 2")
 		    DIALOG \
-			--ok-label "Menu" \
-			--backtitle "Adicionar Usuário/Maquina Virtual" \
-			--msgbox "
+			--ok-label $"Menu" \
+			--backtitle $"Adicionar Usuário/Maquina Virtual" \
+			--msgbox $"
 Adiciona um novo usuario e uma nova Maquina Virtual.
 " 20 70;;
 		
 		"HELP 3")
 		    DIALOG \
-			--ok-label "Menu" \
-			--backtitle "Reinstalar Maquina Virtual com problemas" \
-			--msgbox "
+			--ok-label $"Menu" \
+			--backtitle $"Reinstalar Maquina Virtual com problemas" \
+			--msgbox $"
 Reinstala Maquina Virtual em mau funcionamento por motivos
 de uso.
 " 20 70;;
 		
 		"HELP 4")
 		    DIALOG \
-			--ok-label "Menu" \
-			--backtitle "Remover Maquina Virtual e usuário" \
-			--msgbox "
+			--ok-label $"Menu" \
+			--backtitle $"Remover Maquina Virtual e usuário" \
+			--msgbox $"
 Remove Maquina Virtual e usuario a ela relacionado.
 " 20 70;;
 		
 		"HELP 5")
 		    DIALOG \
-			--ok-label "Menu" \
-			--backtitle "Ver status do sistema" \
-			--msgbox "
+			--ok-label $"Menu" \
+			--backtitle $"Ver status do sistema" \
+			--msgbox $"
 Visualiza todos os dados relativos ao sistema de Maquinas Virtuais:
   - Total de Maquinas Virtuais on-line
   - Capacidade do Linux Volume Manager
@@ -151,8 +151,8 @@ cria_user_list(){
 }
 nao_existe_usuarios(){
 	DIALOG \
-	--cancel-label "Menu" \
-	--yesno "Não existe usuários cadastrados.\n
+	--cancel-label $"Menu" \
+	--yesno $"Não existe usuários cadastrados.\n
 	Deseja cadastrar um novo usuário agora?" 0 0
 #	echo $?
 #	exit
@@ -171,8 +171,8 @@ gerenciamento() {
     	nao_existe_usuarios
     else
         VER_VM=$(DIALOG \
-	--cancel-label "Menu" \
-	--menu "Selecione um usuario para visualizacao:" 0 0 0 \
+	--cancel-label $"Menu" \
+	--menu $"Selecione um usuario para visualizacao:" 0 0 0 \
 	$list)
 
     case $? in
@@ -203,20 +203,20 @@ visualiza(){
     VM_STAT=$( [ ${DATA_USR[9]} -eq 0 ] && echo Ativa || echo Desativa)
     VM_LINE=$(xm list $VER_VM 2>/dev/null | grep $VER_VM | wc -l)
 
-    OPT_ALT=$(DIALOG --cancel-label "Menu" \
+    OPT_ALT=$(DIALOG --cancel-label $"Menu" \
 	--help-button \
-	--help-label "Lista" \
-	--menu "Informações do usuário $USR VM $VER_VM:" 0 0 0 \
-	1 "Nome: $NOME" \
-	2 "Turma: $TURMA" \
-	3 "VM: $VER_VM" \
-	4 "Data de Início: $DT_INI" \
-	5 "Data de Termino: $DT_TER" \
-	6 "Dias de acesso: $DT_ACE" \
-	7 "Hora inicio: $HR_INI:00 Hs" \
-	8  "Hora termino: $HR_TER:00 Hs" \
-	9 "Status VM: $VM_STAT" \
-	10 "Maquina Virtual: $( [ $VM_LINE -eq 1 ] && echo On-line || echo Off-line)")
+	--help-label $"Lista" \
+	--menu $"Informações do usuário $USR VM $VER_VM:" 0 0 0 \
+	1 $"Nome: $NOME" \
+	2 $"Turma: $TURMA" \
+	3 $"VM: $VER_VM" \
+	4 $"Data de Início: $DT_INI" \
+	5 $"Data de Termino: $DT_TER" \
+	6 $"Dias de acesso: $DT_ACE" \
+	7 $"Hora inicio: $HR_INI:00 Hs" \
+	8  $"Hora termino: $HR_TER:00 Hs" \
+	9 $"Status VM: $VM_STAT" \
+	10 $"Maquina Virtual: $( [ $VM_LINE -eq 1 ] && echo On-line || echo Off-line)")
 
     case $? in
         1) menu 
@@ -236,7 +236,7 @@ visualiza(){
     case $OPT_ALT in
         1)
 	    NOME=$(DIALOG \
-		--inputbox "Entre com o novo nome para o usuário:" 0 0 \
+		--inputbox $"Entre com o novo nome para o usuário:" 0 0 \
 		"$NOME")
 	    cancela
 	    
@@ -245,7 +245,7 @@ visualiza(){
 	    ;;
         2)
 	    TURMA=$(DIALOG \
-		--inputbox "Entre com a nova turma para o usuário:" 0 0 \
+		--inputbox $"Entre com a nova turma para o usuário:" 0 0 \
 		"$TURMA")
 	    cancela	    
 	    chfn $USR -r "$TURMA"
@@ -253,7 +253,7 @@ visualiza(){
 	    ;;
         3)
 	    DIALOG \
-		--msgbox "A Maquina Virtual nao eh editavel." 0 0
+		--msgbox $"A Maquina Virtual nao eh editavel." 0 0
 	    visualiza
 	    ;;
         4)
@@ -261,7 +261,7 @@ visualiza(){
 	    MES=$(echo $DT_INI|cut -d "-" -f 2)
 	    ANO="20$(echo $DT_INI|cut -d "-" -f 3)"
 	    DT_INI=$(DIALOG \
-		--calendar "Entre com a nova data início:" 0 0 \
+		--calendar $"Entre com a nova data início:" 0 0 \
 		$DIA $MES $ANO)
     	    cancela	    
 	    DT_INI=$(echo $DT_INI | sed 's|/|-|g' | cut -c 1-6,8,10)
@@ -275,7 +275,7 @@ visualiza(){
 	    ANO="20$(echo $DT_TER|cut -d "-" -f 3)"
 	    
 	    DT_TER=$(DIALOG \
-		--calendar "Entre com a nova data de término:" 0 0 \
+		--calendar $"Entre com a nova data de término:" 0 0 \
 		$DIA $MES $ANO)
 	    cancela
 	    DT_TER=$(echo $DT_TER | sed 's|/|-|g' | cut -c 1-6,8,10)
@@ -285,7 +285,7 @@ visualiza(){
 	    ;;
         6)
 	    DT_ACE=$(DIALOG \
-		--checklist "Selecione os dias da semana para acesso:" 0 0 0 \
+		--checklist $"Selecione os dias da semana para acesso:" 0 0 0 \
 		1 Segunda $([ $(echo $DT_ACE | grep 1) ] && echo on || echo off) \
 		2 Terça $([ $(echo $DT_ACE | grep 2) ] && echo on || echo off) \
 		3 Quarta $([ $(echo $DT_ACE | grep 3) ] && echo on || echo off) \
@@ -302,7 +302,7 @@ visualiza(){
 	    ;;
         7)
 	    HR_INI=$(DIALOG \
-		--timebox "Altere o horário inicial (somente campo hora)" 0 50 \
+		--timebox $"Altere o horário inicial (somente campo hora)" 0 50 \
 		$HR_INI 0 0)
 	    cancela
 	    HR_INI=$(echo $HR_INI| cut -d: -f1)
@@ -313,7 +313,7 @@ visualiza(){
 	    ;;
         8)
 	    HR_TER=$(DIALOG \
-		--timebox "Altere o horário final (somente campo hora)" 0 50 \
+		--timebox $"Altere o horário final (somente campo hora)" 0 50 \
 		$HR_TER 0 0)
 	    cancela
 	    HR_TER=$(echo $HR_TER| cut -d: -f1)
@@ -323,7 +323,7 @@ visualiza(){
 	    ;;
         9)
 	    DATA_USR[9]=$(DIALOG \
-		--radiolist "Selecione o status da Virtual Machine do usuário:" 0 0 0 \
+		--radiolist $"Selecione o status da Virtual Machine do usuário:" 0 0 0 \
 		0 Ativa $([ ${DATA_USR[9]} -eq 0 ] && echo on || echo off) \
 		1 Desativa $([ ${DATA_USR[9]} -eq 1 ] && echo on || echo off) )
 	    cancela
@@ -335,7 +335,7 @@ visualiza(){
 		then
 		# VM On-line (rotina para colocala em mode off-line
 		DIALOG \
-		    --yesno "Deseja colocar a VM $VER_VM em modo Off-line?" 0 0
+		    --yesno $"Deseja colocar a VM $VER_VM em modo Off-line?" 0 0
 		case $? in
 		    0)
 			xm shutdown $VER_VM
@@ -348,7 +348,7 @@ visualiza(){
 	    else
 		# VM Off-line (informa q não é possível colaca-la em outro modo)
 		DIALOG \
-		    --msgbox "A VM já está em modo Off-line." 0 0
+		    --msgbox $"A VM já está em modo Off-line." 0 0
 		visualiza
 	    fi
 	    ;;
@@ -362,13 +362,13 @@ FREE_PE=$(VGDISPLAY | awk '/Free  PE/ {print $7 " " $8}')
     if [ $DISP_VM -eq 0 ];
 	then
 	DIALOG \
-	    --msgbox "Não existe espaço disponível para criação de \n novas Máquinas Virtuais." 0 0
+	    --msgbox $"Não existe espaço disponível para criação de \n novas Máquinas Virtuais." 0 0
 	menu
     else
 	USR=1
 	create_username(){
 	    USR=$(DIALOG \
-		--inputbox "Digite o username para o novo usuário:" 0 0 )
+		--inputbox $"Digite o username para o novo usuário:" 0 0 )
 	    case $? in
 		1) menu
 	        ;;
@@ -376,24 +376,24 @@ FREE_PE=$(VGDISPLAY | awk '/Free  PE/ {print $7 " " $8}')
         }
 
         create_vm(){
-	    echo "XXX"
+	    echo $"XXX"
 	    echo 1
-	    echo "Criando senha."
-	    echo "XXX"
+	    echo $"Criando senha."
+	    echo $"XXX"
 	    PASS=$(dd if=/dev/random ibs=6 count=1 2>/dev/null | mimencode)
 	    if [ $? -eq 0 ]
             then
-	    echo "XXX"
+	    echo $"XXX"
 	    echo 2
-	    echo "Criptografando senha."
-	    echo "XXX"
+	    echo $"Criptografando senha."
+	    echo $"XXX"
 	    CRYPT_PASS=$(mkpasswd $PASS)
 	    if [ $? -eq 0 ]
             then 
-	    echo "XXX"
+	    echo $"XXX"
 	    echo 3
-	    echo "Criando conta do usuário."
-	    echo "XXX"
+	    echo $"Criando conta do usuário."
+	    echo $"XXX"
 	    vm=$(for ((i=1;i<1024;i++))
 		do 
 # FIX ME 
@@ -407,45 +407,45 @@ FREE_PE=$(VGDISPLAY | awk '/Free  PE/ {print $7 " " $8}')
 	    useradd -c "$NOME,$TURMA,@,xen$vm,||$DT_INI|$DT_TER|$DT_ACE|$HR_INI|$HR_TER|0" -m -g xen -p $CRYPT_PASS -s /bin/xensh $USR
  	    if [ $? -eq 0 ]
             then	
-	    echo "XXX"
+	    echo $"XXX"
 	    echo 4
-	    echo "Escrevendo log"
-	    echo "XXX"
+	    echo $"Escrevendo log"
+	    echo $"XXX"
 	    echo -e "$(date +%d/%m/%y) -- $TURMA\t$NOME\t$USR\t$MAIL\txen$vm\t$PASS" >> /var/log/xenprog.log
 	    if [ $? -eq 0 ]
             then 
-	    echo "XXX"
+	    echo $"XXX"
 	    echo 5
-	    echo "Criando VBD LVM."
-	    echo "XXX"
+	    echo $"Criando VBD LVM."
+	    echo $"XXX"
 	    LVCREATE -L512M -n disk$vm xen 2> /dev/null > /dev/null
 	    if [ $? -eq 0 ]
             then
-	    echo "XXX"
+	    echo $"XXX"
 	    echo 6
-	    echo "Criando sistema de arquivos em $XEN_VBD/disk$vm."
-	    echo "XXX"
+	    echo $"Criando sistema de arquivos em $XEN_VBD/disk$vm."
+	    echo $"XXX"
 	    mkfs.ext3 $XEN_VBD/disk$vm 2> /dev/null > /dev/null
 	    if [ $? -eq 0 ]
             then
-	    echo "XXX"
+	    echo $"XXX"
 	    echo 7
-	    echo "Montando VBD LVM."
-	    echo "XXX"
+	    echo $"Montando VBD LVM."
+	    echo $"XXX"
 	    mount $XEN_VBD/disk$vm /mnt/disk  2> /dev/null > /dev/null
 	    if [ $? -eq 0 ]
 	    then	
-	    echo "XXX"
+	    echo $"XXX"
 	    echo 8
-	    echo "Montando disco matriz."
-	    echo "XXX"
+	    echo $"Montando disco matriz."
+	    echo $"XXX"
 	    mount $XEN_VBD/disk_orig /mnt/image 2> /dev/null > /dev/null
 	    if [ $? -eq 0 ]
             then	
-	    echo "XXX"
+	    echo $"XXX"
 	    echo 9
-	    echo "Criando sistema no novo VBD."
-	    echo "XXX"
+	    echo $"Criando sistema no novo VBD."
+	    echo $"XXX"
 	    x=$(df -m /mnt/image | awk '/image/{print $2}')
 	    y=$(echo "$(echo $x) / 86" | bc -l)
 	    df=$(df -m /mnt/disk | awk '/disk/{print $2}')
@@ -458,26 +458,26 @@ FREE_PE=$(VGDISPLAY | awk '/Free  PE/ {print $7 " " $8}')
 		do
 	    	df=$(df -m /mnt/disk | awk '/disk/{print $2}')
 		barra=$(echo "$(echo $df) / $(echo $y) + 10" | bc -l | cut -d . -f 1)
-		echo "XXX"
+		echo $"XXX"
 		echo $barra
-            	echo "Criando sistema no novo VBD. Copiado $(echo $df de $x)"
-            	echo "XXX"
+            	echo $"Criando sistema no novo VBD. Copiado $(echo $df de $x)"
+            	echo $"XXX"
 		sleep 1
             done
 	
-	    echo "XXX"
+	    echo $"XXX"
 	    echo 98
-	    echo "Desmontando volumes." 
-	    echo "XXX"
+	    echo $"Desmontando volumes." 
+	    echo $"XXX"
 	    umount /mnt/image 2> /dev/null > /dev/null
 	    umount /mnt/disk 2> /dev/null > /dev/null
 	    
-	    echo "XXX"
+	    echo $"XXX"
 	    echo 99
-	    echo "Enviando senha por e-mail para o aluno."
-	    echo "XXX"
+	    echo $"Enviando senha por e-mail para o aluno."
+	    echo $"XXX"
 
-	    echo -e "
+	    echo -e $"
 	    Olá $nome
 
 	Voce esta cadastrado no sistema de maquinas virtuais da $INSTITUTION.
@@ -523,45 +523,45 @@ FREE_PE=$(VGDISPLAY | awk '/Free  PE/ {print $7 " " $8}')
 
 	Equipe $INSTITUTION" > /tmp/mail.$USR
 
-	    sudo -u contato mail -s "Senha de acesso para Maquina Virtual XEN $NOME_CURSO" -b $EMAIL_CURSO  $MAIL < /tmp/mail.$USR
-	    sudo -u contato mail -s "Senha de acesso para Maquina Virtual Xen $NOME_CURSO" -b gnuleo@gmail.com  $ADM < /tmp/mail.$USR	
+	    sudo -u contato mail -s $"Senha de acesso para Maquina Virtual XEN $NOME_CURSO" -b $EMAIL_CURSO  $MAIL < /tmp/mail.$USR
+	    sudo -u contato mail -s $"Senha de acesso para Maquina Virtual Xen $NOME_CURSO" -b gnuleo@gmail.com  $ADM < /tmp/mail.$USR	
 	if [ $? -eq 0 ]
 	then
 	    rm /tmp/mail.$USR
 
-	    echo "XXX"
+	    echo $"XXX"
 	    echo 100
-	    echo "Finalizado."
-	    echo "XXX"
+	    echo $"Finalizado."
+	    echo $"XXX"
 	else
-	DIALOG --msgbox "ERRO ao enviar o email de notificacao de criacao da maquina virtual" 0 0
+	DIALOG --msgbox $"ERRO ao enviar o email de notificacao de criacao da maquina virtual" 0 0
 	fi
 	else
-	DIALOG --msgbox "ERRO ao copiar os arquivos da maquina virtual" 0 0
+	DIALOG --msgbox $"ERRO ao copiar os arquivos da maquina virtual" 0 0
 	fi
 	else
-	DIALOG --msgbox "ERRO ao montar o volume logico da maquina exemplo" 0 0
+	DIALOG --msgbox $"ERRO ao montar o volume logico da maquina exemplo" 0 0
 	fi
 	else
-	DIALOG --msgbox "ERRO ao montar o volume logico da maquina virtual" 0 0
+	DIALOG --msgbox $"ERRO ao montar o volume logico da maquina virtual" 0 0
  	fi
 	else
-	DIALOG --msgbox "ERRO ao formatar o volume logico da maquina virtual" 0 0
+	DIALOG --msgbox $"ERRO ao formatar o volume logico da maquina virtual" 0 0
 	fi
         else 
-        DIALOG --msgbox "ERRO ao criar o volume logico da maquina virtual" 0 0
+        DIALOG --msgbox $"ERRO ao criar o volume logico da maquina virtual" 0 0
 	fi
         else
-        DIALOG --msgbox "ERRO ao logar a criacao da maquina virtual." 0 0
+        DIALOG --msgbox $"ERRO ao logar a criacao da maquina virtual." 0 0
 	fi
         else
-        DIALOG --msgbox "ERRO ao adicionar usuario no sistema" 0 0
+        DIALOG --msgbox $"ERRO ao adicionar usuario no sistema" 0 0
 	fi
 	else
-        DIALOG --msgbox "ERRO ao criptografar a senha do usuario" 0 0
+        DIALOG --msgbox $"ERRO ao criptografar a senha do usuario" 0 0
 	fi
 	else 
-        DIALOG --msgbox "ERRO ao criar a senha do usuario" 0 0
+        DIALOG --msgbox $"ERRO ao criar a senha do usuario" 0 0
 	fi
 	}
     
@@ -571,21 +571,21 @@ FREE_PE=$(VGDISPLAY | awk '/Free  PE/ {print $7 " " $8}')
 	done
     
 	NOME=$(DIALOG \
-	    --inputbox "Nome completo:" 0 0 )
+	    --inputbox $"Nome completo:" 0 0 )
 	case $? in
 	    1) menu
 	    ;;
 	esac
     
 	MAIL=$(DIALOG \
-	    --inputbox "E-mail:" 0 0 )
+	    --inputbox $"E-mail:" 0 0 )
 	case $? in
 	    1) menu
 	    ;;
 	esac
     
 	TURMA=$(DIALOG \
-	    --inputbox "Turma:" 0 0 $TURMA)
+	    --inputbox $"Turma:" 0 0 $TURMA)
 	case $? in
 	    1) menu
 	    ;;
@@ -595,7 +595,7 @@ FREE_PE=$(VGDISPLAY | awk '/Free  PE/ {print $7 " " $8}')
     
     
 	DT_INI=$(DIALOG \
-	    --calendar "Data de início:" 0 0 $DT_INI_OLD)
+	    --calendar $"Data de início:" 0 0 $DT_INI_OLD)
 	case $? in
 	    1) menu
 	    ;;
@@ -608,7 +608,7 @@ FREE_PE=$(VGDISPLAY | awk '/Free  PE/ {print $7 " " $8}')
 # Insere Data de termino
     
 	DT_TER=$(DIALOG \
-	    --calendar "Data de término:" 0 0 $DT_TER_OLD)
+	    --calendar $"Data de término:" 0 0 $DT_TER_OLD)
 	case $? in
 	    1) menu
 	    ;;
@@ -621,7 +621,7 @@ FREE_PE=$(VGDISPLAY | awk '/Free  PE/ {print $7 " " $8}')
 # Insere dias da semana de acesso
     
 	DT_ACE=$(DIALOG \
-	    --checklist "Selecione os dias da semana para acesso:" 0 0 0 \
+	    --checklist $"Selecione os dias da semana para acesso:" 0 0 0 \
 	    1 Segunda $([ $(echo $DT_ACE | grep 1) ] && echo on || echo off) \
 	    2 Terça $([ $(echo $DT_ACE | grep 2) ] && echo on || echo off) \
 	    3 Quarta $([ $(echo $DT_ACE | grep 3) ] && echo on || echo off)\
@@ -638,7 +638,7 @@ FREE_PE=$(VGDISPLAY | awk '/Free  PE/ {print $7 " " $8}')
 	
 	
 	HR_INI=$(DIALOG \
-	    --timebox "Horário inicial (somente campo hora)" 0 50 $([ ! $HR_INI ] && echo 0 || echo $HR_INI) 0 0) 
+	    --timebox $"Horário inicial (somente campo hora)" 0 50 $([ ! $HR_INI ] && echo 0 || echo $HR_INI) 0 0) 
 	case $? in
 	    1) menu
 	    ;;
@@ -647,7 +647,7 @@ FREE_PE=$(VGDISPLAY | awk '/Free  PE/ {print $7 " " $8}')
 	HR_INI=$(echo $HR_INI| cut -d: -f1)
 	
 	HR_TER=$(DIALOG \
-	    --timebox "Horário final (somente campo hora)" 0 50 $([ ! $HR_TER ] && echo 0 || echo $HR_TER) 0 0)
+	    --timebox $"Horário final (somente campo hora)" 0 50 $([ ! $HR_TER ] && echo 0 || echo $HR_TER) 0 0)
 	case $? in
 	    1) menu
 	    ;;
@@ -657,8 +657,8 @@ FREE_PE=$(VGDISPLAY | awk '/Free  PE/ {print $7 " " $8}')
 	
 	
 	DIALOG \
-	    --backtitle "As informações estão corretas?" \
-	    --yesno "
+	    --backtitle $"As informações estão corretas?" \
+	    --yesno $"
       Nome completo:    $NOME
       Turma:            $TURMA
       E-mail:           $MAIL
@@ -669,10 +669,10 @@ FREE_PE=$(VGDISPLAY | awk '/Free  PE/ {print $7 " " $8}')
       Hora final:       $HR_TER" 0 0
 	case $? in
 	    0) 
-	    create_vm | DIALOG --gauge "Aguarde..." 20 70 0
+	    create_vm | DIALOG --gauge $"Aguarde..." 20 70 0
 	    DIALOG \
 		--ok-label OK \
-		--msgbox "Usuário $USR e Maquina Virtual adicionados com sucesso." 0 0
+		--msgbox $"Usuário $USR e Maquina Virtual adicionados com sucesso." 0 0
 	    case $? in
 		*) menu
 		;;
@@ -692,13 +692,13 @@ list_remove(){
     if [ ! $list ];
 	then
 	DIALOG \
-	--cancel-label "Menu" \
-	--msgbox "Nao existe nenhuma Maquina Virtual cadastrada." 0 0
+	--cancel-label $"Menu" \
+	--msgbox $"Nao existe nenhuma Maquina Virtual cadastrada." 0 0
 	menu
     else
 	VER_VM=$(DIALOG \
-	--cancel-label "Menu" \
-	--menu "Selecione um usuário/VM para remoção:" 0 0 0 \
+	--cancel-label $"Menu" \
+	--menu $"Selecione um usuário/VM para remoção:" 0 0 0 \
 	$list)
     
     case $? in
@@ -715,7 +715,7 @@ list_remove(){
 remove(){
     USR=$(cat /etc/passwd | grep ",$VER_VM," | cut -d: -f1)
     DIALOG \
-	--yesno "Voce selecionou para a para remoção:
+	--yesno $"Voce selecionou para a para remoção:
 
 Usuário: $USR
 Maquina Virtual: $VER_VM
@@ -728,7 +728,7 @@ Confirma a remoção?
 	    if [ $atividade -eq 0 ]
 		then
 		DIALOG \
-			--yesno "A Maquina Virtual $VER_VM do usuÃ¡rio $USR estÃ¡ ativa
+			--yesno $"A Maquina Virtual $VER_VM do usuÃ¡rio $USR estÃ¡ ativa
 Destruir a Maquina virtual incondicionalmente?" 0 0
 			if [ $? -eq 0 ]
 				then
@@ -750,12 +750,12 @@ Destruir a Maquina virtual incondicionalmente?" 0 0
 	    then
 	    DIALOG \
 		--ok-label OK \
-		--msgbox "Usuário e Virtual Machine removidos com sucesso." 0 0
+		--msgbox $"Usuário e Virtual Machine removidos com sucesso." 0 0
 	    else
-	    DIALOG --msgbox "Erro no comando deluser para remover o usuario" 0 0
+	    DIALOG --msgbox $"Erro no comando deluser para remover o usuario" 0 0
 	    fi
 	    else
-	    DIALOG --msgbox "Não foi possivel remover o volume lógico do usuário" 0 0 
+	    DIALOG --msgbox $"Não foi possivel remover o volume lógico do usuário" 0 0 
 	    fi
 
 	    menu
@@ -773,8 +773,8 @@ list_concerta(){
     if [ ! $list ];
     	then
 	DIALOG \
-	--cancel-label "Menu" \
-	--yesno "Nao existem Maquinas Virtuais cadastradas.\n
+	--cancel-label $"Menu" \
+	--yesno $"Nao existem Maquinas Virtuais cadastradas.\n
 	Deseja cadastrar uma nova maquina virtual agora?" 0 0
 #	echo $?
 #	exit
@@ -787,8 +787,8 @@ list_concerta(){
     else
 # Exibindo menu com a lista
     VER_VM=$(DIALOG \
-	--cancel-label "Menu" \
-	--menu "Selecione um usuário/VM para conserto:" 0 0 0 \
+	--cancel-label $"Menu" \
+	--menu $"Selecione um usuário/VM para conserto:" 0 0 0 \
 	$list)
 
     case $? in
@@ -804,23 +804,23 @@ list_concerta(){
 
 concerta(){
     vm=$(echo $VER_VM | cut -d n -f2)
-    echo "Reformatando VBD."
+    echo $"Reformatando VBD."
     mkfs.ext3 $XEN_VBD/disk$vm 2> /dev/null > /dev/null
     if [ $? -eq 0 ]
     then
-    echo "Montando VBD."
+    echo $"Montando VBD."
     mount $XEN_VBD/disk$vm /mnt/disk  2> /dev/null > /dev/null
     if [ $? -eq 0 ]
     then
-    echo "Montando disco matriz."
+    echo $"Montando disco matriz."
     mount $XEN_VBD/disk_orig /mnt/image 2> /dev/null > /dev/null
     if [ $? -eq 0 ]
     then 
-    echo "Criando sistema no VBD."
+    echo $"Criando sistema no VBD."
     cp -a /mnt/image/* /mnt/disk 2> /dev/null > /dev/null
     if [ $? -eq 0 ]
     then 
-    echo "Desmontando volumes." 
+    echo $"Desmontando volumes." 
     umount /mnt/image 2> /dev/null > /dev/null
     if [ $? -eq 0 ]
     then
@@ -831,31 +831,31 @@ concerta(){
     DIALOG \
 	--ok-label Menu \
 	--beep \
-	--msgbox "Operacao realizada com sucesso." 0 0
+	--msgbox $"Operacao realizada com sucesso." 0 0
 	
    else
 #debug   sleep 5
-   DIALOG --msgbox "ERRO para desmontar o disco da nova maquina virtual" 0 0
+   DIALOG --msgbox $"ERRO para desmontar o disco da nova maquina virtual" 0 0
    fi
    else 
 #debug   sleep 5
-   DIALOG --msgbox "ERRO para desmontar o disco matriz" 0 0
+   DIALOG --msgbox $"ERRO para desmontar o disco matriz" 0 0
    fi
    else 
 #debug   sleep 5
-   DIALOG --msgbox "ERRO durante a copia de arquivos " 0 0 
+   DIALOG --msgbox $"ERRO durante a copia de arquivos " 0 0 
    fi
    else
 #debug   sleep 5
-   DIALOG --msgbox "ERRO durante a montagem do disco matriz" 0 0
+   DIALOG --msgbox $"ERRO durante a montagem do disco matriz" 0 0
    fi
    else 
 #debug   sleep 5 
-   DIALOG --msgbox "ERRO durante a montagem do VBD" 0 0
+   DIALOG --msgbox $"ERRO durante a montagem do VBD" 0 0
    fi
    else
 #debug   sleep 5
-   DIALOG --msgbox "ERRO durante a formatacao do VBD" 0 0
+   DIALOG --msgbox $"ERRO durante a formatacao do VBD" 0 0
    fi
     menu   
 }
@@ -863,12 +863,12 @@ concerta(){
 status_menu(){
     
     OPT=$(DIALOG \
-	--ok-label "Selecionar" \
-	--cancel-label "Menu" \
-	--menu "Escolha uma opção:" 0 0 0 \
-	1 "Recursos do sistema de VBDs e VMs" \
-	2 "Maquinas Virtuais ativas." \
-	3 "Sistema de log de acesso por usuário" )
+	--ok-label $"Selecionar" \
+	--cancel-label $"Menu" \
+	--menu $"Escolha uma opção:" 0 0 0 \
+	1 $"Recursos do sistema de VBDs e VMs" \
+	2 $"Maquinas Virtuais ativas." \
+	3 $"Sistema de log de acesso por usuário" )
     case $? in
         1)
 	    menu
@@ -876,7 +876,7 @@ status_menu(){
     esac
 
     case $OPT in
-	1) # "Recursos do sistema de VBDs (Virtual Block Devices)"
+	1) # $"Recursos do sistema de VBDs (Virtual Block Devices)"
 	    MAX_LV=$(VGDISPLAY | awk '/MAX LV/ {print $3}')
 	    CUR_LV=$(VGDISPLAY | awk '/Cur LV/ {print $3}')
 	    TAM_VG=$(VGDISPLAY | awk '/VG Size/ {print $3 " " $4}')
@@ -887,7 +887,7 @@ status_menu(){
 	    CAPVM_A=$[ ( $(echo $ALLOC_PE | cut -d " " -f 1 | sed 's/\.//;s/,//')0 / 512 - 1 ) ]
 	    DISP_VM=$[ ( $(echo $FREE_PE | cut -d " " -f 1 | sed 's/\.//;s/,//')0 / 512 ) ]
 
-	    MSG=$( echo "
+	    MSG=$( echo $"
 Informações sobre Recursos de Virtual Block Devices em LVM
 ----------------------------------------------------------
     Capacidade maxima de Volumes Logicos.................: $MAX_LV
@@ -905,13 +905,13 @@ Informações sobre Recursos de Maquinas Virtuais
 " | sed 's/Size//')
 
 	    DIALOG \
-		--ok-label "Voltar" \
-		--backtitle "Informações sobre VBDs e VMs" \
-		--msgbox "$MSG" 0 0
+		--ok-label $"Voltar" \
+		--backtitle $"Informações sobre VBDs e VMs" \
+		--msgbox $"$MSG" 0 0
 	    status_menu
 	    ;;
 
-	2) # "Maquinas Virtuais ativas."
+	2) # $"Maquinas Virtuais ativas."
 	    num=
 
 		vm_enable=$(xm list | awk '/xen/ {print $1}')
@@ -928,9 +928,9 @@ Informações sobre Recursos de Maquinas Virtuais
 		    if [ "${num}" ]
 				then
 				VER_VM=$(DIALOG \
-				    --ok-label "Ver info" \
-				    --cancel-label "Voltar" \
-				    --menu "Para visualizar :" 0 0 0 \
+				    --ok-label $"Ver info" \
+				    --cancel-label $"Voltar" \
+				    --menu $"Para visualizar :" 0 0 0 \
 				    $vm_list)
 				case $? in
 				    0) 
@@ -944,16 +944,16 @@ Informações sobre Recursos de Maquinas Virtuais
 				esac   
 		    else
 				DIALOG \
-				    --ok-label "Voltar" \
-				    --backtitle "Informações sobre VBDs" \
-				    --msgbox "$MSG" 0 0		
+				    --ok-label $"Voltar" \
+				    --backtitle $"Informações sobre VBDs" \
+				    --msgbox $"$MSG" 0 0		
 				status_menu
 		    fi
 		else
 			DIALOG \
-			    --ok-label "Voltar" \
-			    --backtitle "Informações sobre VBDs" \
-			    --msgbox "Nao existe nenhuma Maquina Virtual ativa." 0 0		
+			    --ok-label $"Voltar" \
+			    --backtitle $"Informações sobre VBDs" \
+			    --msgbox $"Nao existe nenhuma Maquina Virtual ativa." 0 0		
 		fi
 	    num=
 		status_menu
@@ -961,7 +961,7 @@ Informações sobre Recursos de Maquinas Virtuais
 
 
 
-	3) # "Sistema de log de acesso por usuário"
+	3) # $"Sistema de log de acesso por usuário"
 	sistlog(){
 	    cria_user_list
 	    if [ ! $list ] 
@@ -969,14 +969,14 @@ Informações sobre Recursos de Maquinas Virtuais
 	       nao_existe_usuarios
 	    else
 	    VER_LOG=$(DIALOG \
-		--cancel-label "Menu" \
-		--menu "Selecione um usuário para visualização do log:" 0 0 0 \
+		--cancel-label $"Menu" \
+		--menu $"Selecione um usuário para visualização do log:" 0 0 0 \
 		$list)
 	    case $? in
 		0) 
 		    last $VER_LOG > /tmp/$VER_LOG.log
 		    DIALOG \
-			--backtitle "Log do usuário $VER_LOG" \
+			--backtitle $"Log do usuário $VER_LOG" \
 			--textbox /tmp/$VER_LOG.log 20 60
 		    sistlog
 			cp /tmp/$VER_LOG.log /tmp/teste.log
