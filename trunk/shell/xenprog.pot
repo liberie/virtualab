@@ -1,0 +1,607 @@
+#: xenprog:35
+msgid "Arquivo de configuracao nao existe"
+msgstr ""
+#: xenprog:36
+msgid "Abortando Programa"
+msgstr ""
+#: xenprog:55
+msgid "Selecionar"
+msgstr ""
+#: xenprog:55
+msgid "Sair"
+msgstr ""
+#: xenprog:55
+msgid "Escolha uma opção:"
+msgstr ""
+#: xenprog:55
+msgid "Gerenciamento de usuários e Maquinas Virtuais"
+msgstr ""
+#: xenprog:55
+msgid "Adicionar Usuário/Maquina Virtual"
+msgstr ""
+#: xenprog:55
+msgid "Reinstalar Maquina Virtual com problemas"
+msgstr ""
+#: xenprog:55
+msgid "Remover Maquina Virtual e usuário"
+msgstr ""
+#: xenprog:55
+msgid "Ver status do sistema"
+msgstr ""
+#: xenprog:72
+msgid "Menu"
+msgstr ""
+#: xenprog:73
+msgid "Gerenciamento de usuários e Maquinas Virtuais"
+msgstr ""
+#: xenprog:74
+msgid ""
+"\n"
+"Visualize e altere as configuracoes dos usuarios como:\n"
+"  - Nome\n"
+"  - e-mail\n"
+"  - Turma\n"
+"  - Intervalo/Horas/dias da semana de uso de Maquinas Virtuais\n"
+"  - Status do perfil\n"
+"  - Log de acesso\n"
+""
+msgstr ""
+#: xenprog:85
+msgid "Menu"
+msgstr ""
+#: xenprog:86
+msgid "Adicionar Usuário/Maquina Virtual"
+msgstr ""
+#: xenprog:87
+msgid ""
+"\n"
+"Adiciona um novo usuario e uma nova Maquina Virtual.\n"
+""
+msgstr ""
+#: xenprog:93
+msgid "Menu"
+msgstr ""
+#: xenprog:94
+msgid "Reinstalar Maquina Virtual com problemas"
+msgstr ""
+#: xenprog:95
+msgid ""
+"\n"
+"Reinstala Maquina Virtual em mau funcionamento por motivos\n"
+"de uso.\n"
+""
+msgstr ""
+#: xenprog:102
+msgid "Menu"
+msgstr ""
+#: xenprog:103
+msgid "Remover Maquina Virtual e usuário"
+msgstr ""
+#: xenprog:104
+msgid ""
+"\n"
+"Remove Maquina Virtual e usuario a ela relacionado.\n"
+""
+msgstr ""
+#: xenprog:110
+msgid "Menu"
+msgstr ""
+#: xenprog:111
+msgid "Ver status do sistema"
+msgstr ""
+#: xenprog:112
+msgid ""
+"\n"
+"Visualiza todos os dados relativos ao sistema de Maquinas Virtuais:\n"
+"  - Total de Maquinas Virtuais on-line\n"
+"  - Capacidade do Linux Volume Manager\n"
+"  - Recursos disponiveis de hardware\n"
+"  - log do sistema\n"
+""
+msgstr ""
+#: xenprog:154
+msgid "Menu"
+msgstr ""
+#: xenprog:155
+msgid ""
+"Não existe usuários cadastrados.\\n\n"
+"	Deseja cadastrar um novo usuário agora?"
+msgstr ""
+#: xenprog:173
+msgid "Menu"
+msgstr ""
+#: xenprog:173
+msgid "Selecione um usuario para visualizacao:"
+msgstr ""
+#: xenprog:206
+msgid "Menu"
+msgstr ""
+#: xenprog:206
+msgid "Lista"
+msgstr ""
+#: xenprog:206
+msgid "Informações do usuário $USR VM $VER_VM:"
+msgstr ""
+#: xenprog:206
+msgid "Nome: $NOME"
+msgstr ""
+#: xenprog:206
+msgid "Turma: $TURMA"
+msgstr ""
+#: xenprog:206
+msgid "VM: $VER_VM"
+msgstr ""
+#: xenprog:206
+msgid "Data de Início: $DT_INI"
+msgstr ""
+#: xenprog:206
+msgid "Data de Termino: $DT_TER"
+msgstr ""
+#: xenprog:206
+msgid "Dias de acesso: $DT_ACE"
+msgstr ""
+#: xenprog:206
+msgid "Hora inicio: $HR_INI:00 Hs"
+msgstr ""
+#: xenprog:206
+msgid "Hora termino: $HR_TER:00 Hs"
+msgstr ""
+#: xenprog:206
+msgid "Status VM: $VM_STAT"
+msgstr ""
+#: xenprog:206
+msgid "Maquina Virtual: $( [ $VM_LINE -eq 1 ] && echo On-line || echo Off-line)"
+msgstr ""
+#: xenprog:238
+msgid "Entre com o novo nome para o usuário:"
+msgstr ""
+#: xenprog:247
+msgid "Entre com a nova turma para o usuário:"
+msgstr ""
+#: xenprog:256
+msgid "A Maquina Virtual nao eh editavel."
+msgstr ""
+#: xenprog:263
+msgid "Entre com a nova data início:"
+msgstr ""
+#: xenprog:277
+msgid "Entre com a nova data de término:"
+msgstr ""
+#: xenprog:287
+msgid "Selecione os dias da semana para acesso:"
+msgstr ""
+#: xenprog:304
+msgid "Altere o horário inicial (somente campo hora)"
+msgstr ""
+#: xenprog:315
+msgid "Altere o horário final (somente campo hora)"
+msgstr ""
+#: xenprog:325
+msgid "Selecione o status da Virtual Machine do usuário:"
+msgstr ""
+#: xenprog:338
+msgid "Deseja colocar a VM $VER_VM em modo Off-line?"
+msgstr ""
+#: xenprog:351
+msgid "A VM já está em modo Off-line."
+msgstr ""
+#: xenprog:365
+msgid "Não existe espaço disponível para criação de \\n novas Máquinas Virtuais."
+msgstr ""
+#: xenprog:370
+msgid "Digite o username para o novo usuário:"
+msgstr ""
+#: xenprog:379
+msgid "XXX"
+msgstr ""
+#: xenprog:381
+msgid "Criando senha."
+msgstr ""
+#: xenprog:382
+msgid "XXX"
+msgstr ""
+#: xenprog:386
+msgid "XXX"
+msgstr ""
+#: xenprog:388
+msgid "Criptografando senha."
+msgstr ""
+#: xenprog:389
+msgid "XXX"
+msgstr ""
+#: xenprog:393
+msgid "XXX"
+msgstr ""
+#: xenprog:395
+msgid "Criando conta do usuário."
+msgstr ""
+#: xenprog:396
+msgid "XXX"
+msgstr ""
+#: xenprog:410
+msgid "XXX"
+msgstr ""
+#: xenprog:412
+msgid "Escrevendo log"
+msgstr ""
+#: xenprog:413
+msgid "XXX"
+msgstr ""
+#: xenprog:417
+msgid "XXX"
+msgstr ""
+#: xenprog:419
+msgid "Criando VBD LVM."
+msgstr ""
+#: xenprog:420
+msgid "XXX"
+msgstr ""
+#: xenprog:424
+msgid "XXX"
+msgstr ""
+#: xenprog:426
+msgid "Criando sistema de arquivos em $XEN_VBD/disk$vm."
+msgstr ""
+#: xenprog:427
+msgid "XXX"
+msgstr ""
+#: xenprog:431
+msgid "XXX"
+msgstr ""
+#: xenprog:433
+msgid "Montando VBD LVM."
+msgstr ""
+#: xenprog:434
+msgid "XXX"
+msgstr ""
+#: xenprog:438
+msgid "XXX"
+msgstr ""
+#: xenprog:440
+msgid "Montando disco matriz."
+msgstr ""
+#: xenprog:441
+msgid "XXX"
+msgstr ""
+#: xenprog:445
+msgid "XXX"
+msgstr ""
+#: xenprog:447
+msgid "Criando sistema no novo VBD."
+msgstr ""
+#: xenprog:448
+msgid "XXX"
+msgstr ""
+#: xenprog:461
+msgid "XXX"
+msgstr ""
+#: xenprog:463
+msgid "Criando sistema no novo VBD. Copiado $(echo $df de $x)"
+msgstr ""
+#: xenprog:464
+msgid "XXX"
+msgstr ""
+#: xenprog:468
+msgid "XXX"
+msgstr ""
+#: xenprog:470
+msgid "Desmontando volumes."
+msgstr ""
+#: xenprog:471
+msgid "XXX"
+msgstr ""
+#: xenprog:475
+msgid "XXX"
+msgstr ""
+#: xenprog:477
+msgid "Enviando senha por e-mail para o aluno."
+msgstr ""
+#: xenprog:478
+msgid "XXX"
+msgstr ""
+#: xenprog:480
+msgid ""
+"\n"
+"	    Olá $nome\n"
+"\n"
+"	Voce esta cadastrado no sistema de maquinas virtuais da $INSTITUTION.\n"
+"\n"
+"	Para acessar sua maquina virtual, voce podera usar o SSH caso esteja no Linux, ou o PUTTY caso ainda use Windows.\n"
+"\n"
+"	Para que voce tenha acesso seguem as informacoes Importantes: (Nao perca!!!)\n"
+"\n"
+"	IP do Servidor :  $IP_SERVIDOR\n"
+"	Porta de Acesso:    $PORTA_SERVIDOR\n"
+"	Login de Acesso:    $USR\n"
+"	Senha de Acesso:    $PASS \n"
+"	Sua senha de Root:  $NOME_CURSO\n"
+"\n"
+"	-> Acessando a Maquina Virtual pelo Windows:\n"
+"\n"
+"	Baixe o programinha putty: http://superdownloads.ubbi.com.br/download/i19845.html\n"
+"\n"
+"	E preencha as informacoes de IP e Porta para se conectar!\n"
+"\n"
+"	-> Acessando a Maquina  Virtual pelo Linux:\n"
+"\n"
+"	Execute o comando:  ssh $USR@$IP_SERVIDOR  -p $PORTA_SERVIDOR -C\n"
+"\n"
+"	ATENCAO!!! Voce devera trocar sua senha de root logo no primeiro acesso, para sua propria protecao! Para isso execute o comando:\n"
+"\n"
+"	passwd\n"
+"\n"
+"	E lembre-se, Eh obrigatario colocar uma SENHA BEM DIFICIL! ;-)\n"
+"\n"
+"	Dias em que sua maquina estara disponivel: $DT_ACE\n"
+"	(Sendo 1-Segunda, 2-Terca, 3-Quarta, 4-Quinta, 5-Sexta, 6-Sabado e 7-Domingo)\n"
+"\n"
+"	Horario que sua Maquina Virtual estara disponivel: Das $HR_INI:00 as $HR_TER:00\n"
+"\n"
+"	-> Encerrando uma conexao na Maquina Virtual:\n"
+"\n"
+"	Para SAIR da Maquina Virtual da maneira correta, basta teclar  Ctrl+]\n"
+"\n"
+"	Isso mesmo a CTRL + ] (Fecha Colchete!) :-)\n"
+"\n"
+"	Bom Acesso!\n"
+"\n"
+"	Equipe $INSTITUTION"
+msgstr ""
+#: xenprog:526
+msgid "Senha de acesso para Maquina Virtual XEN $NOME_CURSO"
+msgstr ""
+#: xenprog:527
+msgid "Senha de acesso para Maquina Virtual Xen $NOME_CURSO"
+msgstr ""
+#: xenprog:532
+msgid "XXX"
+msgstr ""
+#: xenprog:534
+msgid "Finalizado."
+msgstr ""
+#: xenprog:535
+msgid "XXX"
+msgstr ""
+#: xenprog:537
+msgid "ERRO ao enviar o email de notificacao de criacao da maquina virtual"
+msgstr ""
+#: xenprog:540
+msgid "ERRO ao copiar os arquivos da maquina virtual"
+msgstr ""
+#: xenprog:543
+msgid "ERRO ao montar o volume logico da maquina exemplo"
+msgstr ""
+#: xenprog:546
+msgid "ERRO ao montar o volume logico da maquina virtual"
+msgstr ""
+#: xenprog:549
+msgid "ERRO ao formatar o volume logico da maquina virtual"
+msgstr ""
+#: xenprog:552
+msgid "ERRO ao criar o volume logico da maquina virtual"
+msgstr ""
+#: xenprog:555
+msgid "ERRO ao logar a criacao da maquina virtual."
+msgstr ""
+#: xenprog:558
+msgid "ERRO ao adicionar usuario no sistema"
+msgstr ""
+#: xenprog:561
+msgid "ERRO ao criptografar a senha do usuario"
+msgstr ""
+#: xenprog:564
+msgid "ERRO ao criar a senha do usuario"
+msgstr ""
+#: xenprog:573
+msgid "Nome completo:"
+msgstr ""
+#: xenprog:580
+msgid "E-mail:"
+msgstr ""
+#: xenprog:587
+msgid "Turma:"
+msgstr ""
+#: xenprog:597
+msgid "Data de início:"
+msgstr ""
+#: xenprog:610
+msgid "Data de término:"
+msgstr ""
+#: xenprog:623
+msgid "Selecione os dias da semana para acesso:"
+msgstr ""
+#: xenprog:640
+msgid "Horário inicial (somente campo hora)"
+msgstr ""
+#: xenprog:649
+msgid "Horário final (somente campo hora)"
+msgstr ""
+#: xenprog:660
+msgid "As informações estão corretas?"
+msgstr ""
+#: xenprog:661
+msgid ""
+"\n"
+"      Nome completo:    $NOME\n"
+"      Turma:            $TURMA\n"
+"      E-mail:           $MAIL\n"
+"      Data de início:    $DT_INI\n"
+"      Data de termino:  $DT_TER\n"
+"      Dias de acesso:   $DT_ACE\n"
+"      Hora inicial:     $HR_INI\n"
+"      Hora final:       $HR_TER"
+msgstr ""
+#: xenprog:672
+msgid "Aguarde..."
+msgstr ""
+#: xenprog:675
+msgid "Usuário $USR e Maquina Virtual adicionados com sucesso."
+msgstr ""
+#: xenprog:695
+msgid "Menu"
+msgstr ""
+#: xenprog:696
+msgid "Nao existe nenhuma Maquina Virtual cadastrada."
+msgstr ""
+#: xenprog:699
+msgid "Menu"
+msgstr ""
+#: xenprog:699
+msgid "Selecione um usuário/VM para remoção:"
+msgstr ""
+#: xenprog:718
+msgid ""
+"Voce selecionou para a para remoção:\n"
+"\n"
+"Usuário: $USR\n"
+"Maquina Virtual: $VER_VM\n"
+"\n"
+"Confirma a remoção?\n"
+""
+msgstr ""
+#: xenprog:731
+msgid ""
+"A Maquina Virtual $VER_VM do usuÃ¡rio $USR estÃ¡ ativa\n"
+"Destruir a Maquina virtual incondicionalmente?"
+msgstr ""
+#: xenprog:753
+msgid "Usuário e Virtual Machine removidos com sucesso."
+msgstr ""
+#: xenprog:755
+msgid "Erro no comando deluser para remover o usuario"
+msgstr ""
+#: xenprog:758
+msgid "Não foi possivel remover o volume lógico do usuário"
+msgstr ""
+#: xenprog:776
+msgid "Menu"
+msgstr ""
+#: xenprog:777
+msgid ""
+"Nao existem Maquinas Virtuais cadastradas.\\n\n"
+"	Deseja cadastrar uma nova maquina virtual agora?"
+msgstr ""
+#: xenprog:789
+msgid "Menu"
+msgstr ""
+#: xenprog:789
+msgid "Selecione um usuário/VM para conserto:"
+msgstr ""
+#: xenprog:807
+msgid "Reformatando VBD."
+msgstr ""
+#: xenprog:811
+msgid "Montando VBD."
+msgstr ""
+#: xenprog:815
+msgid "Montando disco matriz."
+msgstr ""
+#: xenprog:819
+msgid "Criando sistema no VBD."
+msgstr ""
+#: xenprog:823
+msgid "Desmontando volumes."
+msgstr ""
+#: xenprog:834
+msgid "Operacao realizada com sucesso."
+msgstr ""
+#: xenprog:838
+msgid "ERRO para desmontar o disco da nova maquina virtual"
+msgstr ""
+#: xenprog:842
+msgid "ERRO para desmontar o disco matriz"
+msgstr ""
+#: xenprog:846
+msgid "ERRO durante a copia de arquivos "
+msgstr ""
+#: xenprog:850
+msgid "ERRO durante a montagem do disco matriz"
+msgstr ""
+#: xenprog:854
+msgid "ERRO durante a montagem do VBD"
+msgstr ""
+#: xenprog:858
+msgid "ERRO durante a formatacao do VBD"
+msgstr ""
+#: xenprog:865
+msgid "Selecionar"
+msgstr ""
+#: xenprog:865
+msgid "Menu"
+msgstr ""
+#: xenprog:865
+msgid "Escolha uma opção:"
+msgstr ""
+#: xenprog:865
+msgid "Recursos do sistema de VBDs e VMs"
+msgstr ""
+#: xenprog:865
+msgid "Maquinas Virtuais ativas."
+msgstr ""
+#: xenprog:865
+msgid "Sistema de log de acesso por usuário"
+msgstr ""
+#: xenprog:890
+msgid ""
+"\n"
+"Informações sobre Recursos de Virtual Block Devices em LVM\n"
+"----------------------------------------------------------\n"
+"    Capacidade maxima de Volumes Logicos.................: $MAX_LV\n"
+"    Volumes Logicos alocados no sistema..................: $CUR_LV\n"
+"    Tamanho total do Grupo de Volume.....................: $TAM_VG\n"
+"    Espaco alocado no Grupo de Volume....................: $ALLOC_PE\n"
+"    Espaco disponivel no Grupo de Volume.................: $FREE_PE\n"
+"\n"
+"Informações sobre Recursos de Maquinas Virtuais\n"
+"----------------------------------------------------------\n"
+"    Capacidade maxima de Maquinas Virtuais...............: $CAPVM_T\n"
+"    Capacidade em uso por Maquinas Virtuais..............: $CAPVM_A\n"
+"    Capacidade disponivel para novas Maquinas Virtuais...: $DISP_VM\n"
+"\n"
+""
+msgstr ""
+#: xenprog:908
+msgid "Voltar"
+msgstr ""
+#: xenprog:909
+msgid "Informações sobre VBDs e VMs"
+msgstr ""
+#: xenprog:910
+msgid "$MSG"
+msgstr ""
+#: xenprog:930
+msgid "Ver info"
+msgstr ""
+#: xenprog:930
+msgid "Voltar"
+msgstr ""
+#: xenprog:930
+msgid "Para visualizar :"
+msgstr ""
+#: xenprog:947
+msgid "Voltar"
+msgstr ""
+#: xenprog:948
+msgid "Informações sobre VBDs"
+msgstr ""
+#: xenprog:949
+msgid "$MSG"
+msgstr ""
+#: xenprog:954
+msgid "Voltar"
+msgstr ""
+#: xenprog:955
+msgid "Informações sobre VBDs"
+msgstr ""
+#: xenprog:956
+msgid "Nao existe nenhuma Maquina Virtual ativa."
+msgstr ""
+#: xenprog:971
+msgid "Menu"
+msgstr ""
+#: xenprog:971
+msgid "Selecione um usuário para visualização do log:"
+msgstr ""
+#: xenprog:979
+msgid "Log do usuário $VER_LOG"
+msgstr ""

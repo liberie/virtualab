@@ -1,0 +1,105 @@
+#: xensh:33
+msgid "Sua senha ainda é a padrão do sistema.\\nDeseja altera-la agora?"
+msgstr ""
+#: xensh:36
+msgid "Senha alterada com sucesso."
+msgstr ""
+#: xensh:36
+msgid "A senha não foi alterada."
+msgstr ""
+#: xensh:41
+msgid "Você selecionou alterar sua senha.\\nDeseja altera-la agora?"
+msgstr ""
+#: xensh:44
+msgid "Senha alterada com sucesso."
+msgstr ""
+#: xensh:44
+msgid "A senha não foi alterada."
+msgstr ""
+#: xensh:61
+msgid "Selecione uma Virtual Machine para se conectar"
+msgstr ""
+#: xensh:73
+msgid "Porta ssh do host $CON {Enter para default}: "
+msgstr ""
+#: xensh:77
+msgid "Porta $port nao eh valida."
+msgstr ""
+#: xensh:78
+msgid "Porta ssh do host $CON {Enter para default}: "
+msgstr ""
+#: xensh:81
+msgid "Username: "
+msgstr ""
+#: xensh:93
+msgid "Nao existe nunhuma Virtual Machine disponivel."
+msgstr ""
+#: xensh:105
+msgid "A $VM esta ativa. Voce deseja derruba-la?"
+msgstr ""
+#: xensh:111
+msgid "Derrubando VM $VM"
+msgstr ""
+#: xensh:152
+msgid "Sem sessao virtualizada. Iniciando VM $VM."
+msgstr ""
+#: xensh:156
+msgid "Iniciando Maquina Virutal."
+msgstr ""
+#: xensh:158
+msgid "\\e[34;1m########## PRESSIONE CTRL-] A QUALQUER MOMENTO PARA SAIR  ############\\e[m"
+msgstr ""
+#: xensh:169
+msgid "Desativando Maquina Virtual $VM "
+msgstr ""
+#: xensh:202
+msgid "Maquina Virtual $VM desativada."
+msgstr ""
+#: xensh:204
+msgid "Precione a tecla Enter para continuar."
+msgstr ""
+#: xensh:212
+msgid "Maquina Virutal $VM foi desativada."
+msgstr ""
+#: xensh:214
+msgid "Precione a tecla Enter para continuar."
+msgstr ""
+#: xensh:221
+msgid "Selecione uma opção:"
+msgstr ""
+#: xensh:221
+msgid "Iniciar Virtual Machine."
+msgstr ""
+#: xensh:221
+msgid "Alterar senha."
+msgstr ""
+#: xensh:221
+msgid "Acessar Virtual Machine via ssh."
+msgstr ""
+#: xensh:221
+msgid "Sair."
+msgstr ""
+#: xensh:247
+msgid "Limite de conexoes simultaneas esgotado."
+msgstr ""
+#: xensh:248
+msgid "Tente mais tarde ou consulte o administrador."
+msgstr ""
+#: xensh:275
+msgid "Status STAT"
+msgstr ""
+#: xensh:281
+msgid "Status DT_INI"
+msgstr ""
+#: xensh:287
+msgid "Status DT_TER"
+msgstr ""
+#: xensh:294
+msgid "Status SEMANA"
+msgstr ""
+#: xensh:302
+msgid "Status H_INI"
+msgstr ""
+#: xensh:307
+msgid "Status DT_TER"
+msgstr ""
