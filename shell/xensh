@@ -30,18 +30,18 @@ home=/home/$USER
 chpass(){
     case $1 in
 	1) 
-	dialog --yesno $"Sua senha ainda é a padrão do sistema.\nDeseja altera-la agora?" 0 0
+	dialog --yesno "Sua senha ainda é a padrão do sistema.\nDeseja altera-la agora?" 0 0
 	case $? in
 	    0) 
-	    passwd && (touch $home/.xenprog ;dialog --msgbox $"Senha alterada com sucesso." 0 0) || dialog --msgbox $"A senha não foi alterada." 0 0
+	    passwd && (touch $home/.xenprog ;dialog --msgbox "Senha alterada com sucesso." 0 0) || dialog --msgbox "A senha não foi alterada." 0 0
 	    ;;
         esac
         ;;
 	2)
-	dialog --yesno $"Você selecionou alterar sua senha.\nDeseja altera-la agora?" 0 0
+	dialog --yesno "Você selecionou alterar sua senha.\nDeseja altera-la agora?" 0 0
 	case $? in
 	    0) 
-	    passwd && (touch $home/.xenprog ;dialog --msgbox $"Senha alterada com sucesso." 0 0) || dialog --msgbox $"A senha não foi alterada." 0 0
+	    passwd && (touch $home/.xenprog ;dialog --msgbox "Senha alterada com sucesso." 0 0) || dialog --msgbox "A senha não foi alterada." 0 0
 	    ;;
 	esac
 	;;
@@ -58,7 +58,7 @@ sshhost()
     done
     if [ ${#VARS[@]} -ne 0 ];
 	then
-	CON=$(dialog --stdout --menu $"Selecione uma Virtual Machine para se conectar" 0 0 0 ${VARS[*]})
+	CON=$(dialog --stdout --menu "Selecione uma Virtual Machine para se conectar" 0 0 0 ${VARS[*]})
 	case $? in
 	    0)
 	    ctrl()
@@ -70,15 +70,15 @@ sshhost()
 	    
 	    for ((num=0;num<3;num++))
 	      do
-	      read -p$"Porta ssh do host $CON {Enter para default}: " port
+	      read -p"Porta ssh do host $CON {Enter para default}: " port
 	      [ ! $port ] && port=22
 	      while [ "$(expr 5 / $port 2> /dev/null)" = "" ]
 		do
-		echo $"Porta $port nao eh valida."
-		read -p$"Porta ssh do host $CON {Enter para default}: " port
+		echo "Porta $port nao eh valida."
+		read -p"Porta ssh do host $CON {Enter para default}: " port
 	      done
 
-	      read -p$"Username: " user
+	      read -p"Username: " user
 	      [ $user ] && num=4
 	    done
 	    ssh -p $port -l $user $CON 
@@ -90,7 +90,7 @@ sshhost()
 	    ;;
          esac
     else
-	dialog --msgbox $"Nao existe nunhuma Virtual Machine disponivel." 0 0
+	dialog --msgbox "Nao existe nunhuma Virtual Machine disponivel." 0 0
 	entrar
     fi
 }
@@ -102,13 +102,13 @@ startvm()
     
     if [ "$(sudo xm list $VM 2> /dev/null| grep $VM | cut -d ' ' -f 1)" = "$VM" ];
 	then
-	dialog --yesno $"A $VM esta ativa. Voce deseja derruba-la?" 0 0
+	dialog --yesno "A $VM esta ativa. Voce deseja derruba-la?" 0 0
 	case $? in
 	    0)
 	    touch /tmp/$VM 
 	    clear
 	    tput setaf 4
-            echo -n $"Derrubando VM $VM"
+            echo -n "Derrubando VM $VM"
             sleep 2
             sudo xm shutdown $VM
             tput setaf 2
@@ -149,13 +149,13 @@ startvm()
        esac
    else
       clear
-      echo $"Sem sessao virtualizada. Iniciando VM $VM."
+      echo "Sem sessao virtualizada. Iniciando VM $VM."
       sleep 2
       clear
       sudo xm create -c -f /etc/xen/conffiles/$VM
-      echo $"Iniciando Maquina Virutal."
+      echo "Iniciando Maquina Virutal."
       clear
-      echo -e $"\e[34;1m########## PRESSIONE CTRL-] A QUALQUER MOMENTO PARA SAIR  ############\e[m"
+      echo -e "\e[34;1m########## PRESSIONE CTRL-] A QUALQUER MOMENTO PARA SAIR  ############\e[m"
       sleep 5
       sudo xm console $VM
     fi
@@ -166,7 +166,7 @@ startvm()
 	    then
 	    clear
 	    tput setaf 4
-	    echo -ne $"Desativando Maquina Virtual $VM "
+	    echo -ne "Desativando Maquina Virtual $VM "
 	    sudo /usr/sbin/xm shutdown $VM
 	    tput setaf 2
 	    while [ "$VM" = "$(sudo /usr/sbin/xm list $VM 2> /dev/null | awk '/xen/ {print $1}')" ];
@@ -199,9 +199,9 @@ startvm()
 	    done
 	    echo
 	    tput setaf 2
-	    echo $"Maquina Virtual $VM desativada." 
+	    echo "Maquina Virtual $VM desativada." 
 	    tput setaf 4
-	    read -p $"Precione a tecla Enter para continuar." press
+	    read -p "Precione a tecla Enter para continuar." press
 	    tput op
 	    entrar
         fi
@@ -209,16 +209,16 @@ startvm()
 	rm /tmp/$VM
 	clear
 	tput setaf 2
-	echo $"Maquina Virutal $VM foi desativada."
+	echo "Maquina Virutal $VM foi desativada."
 	tput setaf 4
-	read -p $"Precione a tecla Enter para continuar." press
+	read -p "Precione a tecla Enter para continuar." press
 	tput op
 	entrar
     fi
 }
 
 entrar(){
-    VAR=$(dialog --stdout --nocancel --menu $"Selecione uma opção:" 0 0 0 1 $"Iniciar Virtual Machine." 2 $"Alterar senha." 3 $"Acessar Virtual Machine via ssh." 4 $"Sair.")
+    VAR=$(dialog --stdout --nocancel --menu "Selecione uma opção:" 0 0 0 1 "Iniciar Virtual Machine." 2 "Alterar senha." 3 "Acessar Virtual Machine via ssh." 4 "Sair.")
     case $VAR in
 	1)
         startvm
@@ -244,8 +244,8 @@ VM_ON=$(sudo xm list  2> /dev/null | grep xen | wc -l)
 
 if [ $VM_ON -ge $TOT_VM ]
     then
-    echo $"Limite de conexoes simultaneas esgotado."
-    echo $"Tente mais tarde ou consulte o administrador."
+    echo "Limite de conexoes simultaneas esgotado."
+    echo "Tente mais tarde ou consulte o administrador."
     entrar
 fi
 
@@ -272,26 +272,26 @@ SEMANA=$(cat /etc/passwd | grep "^$USER:" | cut -d "|" -f5)
 
 if [ $STAT -eq 1 ];
     then
-    echo $"Status STAT"
+    echo "Status STAT"
     exit
 fi
 
 if [ $DATA -lt $DT_INI ] 
     then
-    echo $"Status DT_INI"
+    echo "Status DT_INI"
     exit
 fi
 
 if [ $DATA -gt $DT_TER ] 
     then
-    echo $"Status DT_TER"
+    echo "Status DT_TER"
     exit
 fi
 
 
 if [ ! "$(echo $SEMANA | grep $(date +%u))" ] 
     then
-    echo $"Status SEMANA"
+    echo "Status SEMANA"
     exit
 fi
 
@@ -299,12 +299,12 @@ if [ $H_INI -ne 0 ] || [ $H_TER -ne 0 ];
     then
     if [ $H_INI -gt $(date +%H) ] 
 	then
-	echo $"Status H_INI"
+	echo "Status H_INI"
 	exit
     fi
     if [ $H_TER -le $(date +%H) ] 
 	then
-	echo $"Status DT_TER"
+	echo "Status DT_TER"
 	exit
     fi
 fi
