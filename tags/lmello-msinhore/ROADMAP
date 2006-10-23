@@ -1,0 +1,56 @@
+---ROADMAP:
+Versao 1.0 (prazo estimado para implementacao 30 dias) (lancamento: 07/08/2006)
+
+Nao deixar erros passar silenciosamente. 40% 
+
+01 - Adicionar rotina para checar se o usuario e maquina virtual foram adicionados com sucesso. OK
+
+02 - Criar o arquivo de configuracao das maquinas virtuais durante o processo de criacao de vm.
+
+03 - Adicionar rotina para checar se o usuario foi removido com sucesso. OK
+
+04 - As partes que apresentam mensagem (msgbox), acredito que pode ser criada uma funcao geral de apresentacao de dados, pois sempre ta sendo criada uma variavel $MSG e mostrada ela. o unico problema eh que o backtitle muda. sera que pode abrir mao do backtitle em prol de uma maior modularizacao ? ou será melhor utilizar funcao com passagem de parametro em shell, onde o parametro passado sera o backtitle e o $MSG.
+
+05 - Integrar com o xen 3.0
+
+06 - Adicionar no xenprog o recurso (xm top)
+
+07 - Adicionar rotina para checar se a maquina foi restaurada com sucesso. OK
+
+Versao 1.1 (prazo estimado para implementacao 45 dias) (lancamento:22/09/2006)
+
+01 - Integracao com xen-tools (xen-create-image)
+
+02 - Permitir que as configuracoes de cada maquina virtual sejam alteradas on the fly pelo
+xenprog. (quantidade de memoria ram)
+
+03 - Integrar criacao de maquina virtual exemplo no processo de instalacao (disk_orig)
+
+Versao 1.2 (prazo estimado para implementacao 30 dias) (lancamento:22/10/2006)
+
+01 - Utilizacao de SQLITE para armazenamento das configuracoes de maquina virtual.
+
+02 - O Banco de dados devera ser generico e possibilitar as implementacoes 
+que serao realizadas na versao 1.3
+
+Versao 1.3 (prazo estimado para implementacao 60 dias) (lancamento:22/12/2006)
+
+
+01 - Permitir a criacao de maquinas virtuais diferenciadas. (webserver, mailserver, etc.).
+
+02 - Permitir a passagem da lista de pacotes que deverao ser instalados em cada maquina virtual modelo. 
+
+03 - Alteracoes no xenprog para que o mesmo possa ser utilizado por datacenters para administrar seus servidores.
+
+04 - Novas funcionalidades no xensh para controle de cada maquina virtual do usuario. pause, unpause, shutdown, etc.
+
+Versao 1.4 (prazo estimado para implementacao 30 dias) (lancamento: 22/01/2007)
+
+01 - Implementacao de novas funcionalidades do xen na interface de administracao xenprog.
+
+02 - Melhorias para tornar o xensh mais voltado para empresas/data center. 
+
+Versao 1.5 (prazo estimado para implementacao 40 dias) (lancamento: 06/03/2007)
+
+01 - Internacionalizacao
+

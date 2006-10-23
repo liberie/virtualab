@@ -1,0 +1,18 @@
+#Arquivo de configuração do Xensh
+#as variaveis abaixo podem ser alteradas com seguranca.
+INSTITUTION="VAR1"
+NOME_CURSO="VAR2"
+EMAIL_CURSO="VAR3"
+IP_SERVIDOR="VAR4"
+PORTA_SERVIDOR="VAR5"
+XEN_VBD="VAR6"
+XEN_CONF="VAR7"
+ADM="VAR8"
+
+
+######Nao ALTERE NADA DAQUI PRA BAIXO ########
+alias DIALOG="dialog --title \"Gerenciamento XEN\" --stdout"
+alias VGDISPLAY="/lib/lvm-200/vgdisplay"
+alias LVCREATE="/lib/lvm-200/lvcreate"
+alias LVREMOVE="/lib/lvm-200/lvremove"
+SESSION=$RANDOM
